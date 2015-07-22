@@ -1,0 +1,762 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"gen",
+				"generate_str	function"
+			],
+			[
+				"sub",
+				"sublime_plugin	module"
+			],
+			[
+				"with_tramp",
+				"with_trampoline	function"
+			],
+			[
+				"trampoline",
+				"trampoline_factorial	function"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "sublime_motion_plugin.py",
+			"settings":
+			{
+				"buffer_size": 8538,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Anaconda Python Builder",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Anaconda Python Builder",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				],
+				[
+					"Packages/SublimeREPL/sublimerepl_build_system_hack.sublime-build",
+					""
+				]
+			],
+			[
+				"Anaconda Python Builder",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 169.0,
+		"last_filter": "remove",
+		"selected_items":
+		[
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"pep8",
+				"Anaconda: Autoformat PEP8 Errors"
+			],
+			[
+				"plugin",
+				"SublimeLinter: Create Linter Plugin"
+			],
+			[
+				"user",
+				"Preferences: Settings - User"
+			],
+			[
+				":w",
+				":w - Save"
+			],
+			[
+				"pepe8",
+				"Anaconda: Autoformat PEP8 Errors"
+			],
+			[
+				":pep8",
+				"Anaconda: Autoformat PEP8 Errors"
+			],
+			[
+				"mardown",
+				"Preferences: MarkdownEditing Settings – User"
+			],
+			[
+				"ana",
+				"Anaconda: Autoformat PEP8 Errors"
+			],
+			[
+				"terminal",
+				"Terminality: Browse Commands..."
+			],
+			[
+				"package",
+				"Preferences: Package Control Settings – User"
+			],
+			[
+				"sidebar",
+				"View: Toggle Open Files in Side Bar"
+			],
+			[
+				"tog",
+				"View: Toggle Status Bar"
+			],
+			[
+				"toglesid",
+				"View: Toggle Open Files in Side Bar"
+			],
+			[
+				"toglebar",
+				"View: Toggle Status Bar"
+			],
+			[
+				"status",
+				"View: Toggle Status Bar"
+			],
+			[
+				"vinctrl",
+				"Vintageous: Toggle Vim Ctrl Keys"
+			],
+			[
+				"key",
+				"Preferences: Key Bindings - User"
+			],
+			[
+				"python",
+				"Set Syntax: Python"
+			],
+			[
+				"vintage",
+				"Vintageous: Reset"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"prev",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"preview",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"settus",
+				"Preferences: Settings - User"
+			],
+			[
+				"markdownuser",
+				"Preferences: MarkdownEditing Settings – User"
+			],
+			[
+				"gitpus",
+				"Git: Push"
+			],
+			[
+				"gitcom",
+				"Git: Commit"
+			],
+			[
+				"gitad",
+				"Git: Add Current File"
+			],
+			[
+				"gitpush",
+				"Git: Push"
+			],
+			[
+				"gitcomm",
+				"Git: Commit"
+			],
+			[
+				"gitadd",
+				"Git: Add Current File"
+			],
+			[
+				"git push",
+				"Git: Push Tags"
+			],
+			[
+				"add",
+				"Git: Add Current File"
+			],
+			[
+				"commit",
+				"Git: Commit"
+			],
+			[
+				"markdown",
+				"Set Syntax: Markdown"
+			],
+			[
+				"openpro",
+				"Project Manager: Open Project"
+			],
+			[
+				"termian",
+				"Terminality: Browse Commands..."
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"build",
+				"Build With: Python"
+			],
+			[
+				"project",
+				"Project Manager: Open Project"
+			],
+			[
+				"new",
+				"ANF: New File"
+			],
+			[
+				"mini",
+				"View: Toggle Minimap"
+			],
+			[
+				"to",
+				"Vintageous: Toggle Vim Ctrl Keys"
+			],
+			[
+				"togctr",
+				"Vintageous: Toggle Vim Ctrl Keys"
+			],
+			[
+				"origmove",
+				"Origami: Move File to Pane on the Right"
+			],
+			[
+				"oridestr",
+				"Origami: Destroy Current Pane"
+			],
+			[
+				"orig",
+				"Origami: Destroy Current Pane"
+			],
+			[
+				"markdownview",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"togstt",
+				"View: Toggle Status Bar"
+			],
+			[
+				"cheatsheet",
+				"Cheat Sheet: Git"
+			],
+			[
+				"replpython",
+				"SublimeREPL: Python"
+			],
+			[
+				"repl",
+				"SublimeREPL: Matlab"
+			],
+			[
+				"us",
+				"Preferences: Settings - User"
+			],
+			[
+				"time",
+				"Vintageous: Toggle Vim Ctrl Keys"
+			],
+			[
+				"default",
+				"Preferences: Settings - Default"
+			],
+			[
+				"cheat",
+				"Markdown Preview: Open Markdown Cheat sheet"
+			],
+			[
+				"ctrl",
+				"Vintageous: Toggle Vim Ctrl Keys"
+			],
+			[
+				"notebook",
+				"Shutdown IPython Notebook Kernel"
+			],
+			[
+				"markpre",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"projectsave",
+				"Project: Save As"
+			],
+			[
+				"autopep8",
+				"Anaconda: Autoformat PEP8 Errors"
+			],
+			[
+				"autopp",
+				"Preferences: AutoPep8 Settings – User"
+			],
+			[
+				"prefs",
+				"Preferences: Settings - User"
+			],
+			[
+				"pref",
+				"Preferences: Settings - User"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 521.0
+	},
+	"console":
+	{
+		"height": 301.0,
+		"history":
+		[
+			"window.run_command('my_test')",
+			"window.run_command('my_text')",
+			"view.run_command('my_test')",
+			"view.run_command(\"prefix\")",
+			"view.run_command(\"prefixr\")",
+			"view.run_command('example')",
+			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": false,
+		"show_minimap": true,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/test_plugins/test_plugins.py",
+		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/test_plugins/Default (OSX).sublime-keymap",
+		"/Users/hp/Project/ace-jump-sublime/ace_jump.py",
+		"/Users/hp/Project/ace-jump-sublime/Default (OSX).sublime-keymap",
+		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/DeleteWord/delete_word.py",
+		"/Users/hp/Project/ace-jump-sublime/AceJump.sublime-settings",
+		"/Users/hp/Project/ace-jump-sublime/README.md",
+		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/User/Markdown.sublime-settings",
+		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/cnpremailer/cnpremailer.py",
+		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/User/Package Control.sublime-settings",
+		"/Users/hp/Project/ace-jump-sublime/my_ace_jump.py",
+		"/Users/hp/Project/Vintageous/xactions.py",
+		"/Users/hp/Project/Vintageous/tests/commands/test_vi_big_p.py",
+		"/Users/hp/Project/Vintageous/README.md",
+		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/hp/Project/Vintageous/tests/vi/test_big_word_reverse.py",
+		"/Users/hp/Project/Vintageous/vi/__init__.py",
+		"/Users/hp/Project/Vintageous/vi/abbrev.py",
+		"/Users/hp/Project/Vintageous/vi/cmd_base.py",
+		"/Users/hp/Project/Vintageous/vi/cmd_defs.py",
+		"/Users/hp/Project/Vintageous/vi/constants.py",
+		"/Users/hp/Project/Vintageous/vi/contexts.py",
+		"/Users/hp/Project/Vintageous/vi/core.py",
+		"/Users/hp/Project/Vintageous/vi/dot_file.py",
+		"/Users/hp/Project/Vintageous/vi/extend.py",
+		"/Users/hp/Project/Vintageous/vi/inputs.py",
+		"/Users/hp/Project/Vintageous/vi/jump_list.py",
+		"/Users/hp/Project/Vintageous/vi/keys.py",
+		"/Users/hp/Project/Vintageous/vi/macros.py",
+		"/Users/hp/Project/Vintageous/vi/mappings.py",
+		"/Users/hp/Project/Vintageous/vi/marks.py",
+		"/Users/hp/Project/Vintageous/vi/registers.py",
+		"/Users/hp/Project/Vintageous/vi/search.py",
+		"/Users/hp/Project/Vintageous/vi/settings.py",
+		"/Users/hp/Project/Vintageous/vi/sublime.py",
+		"/Users/hp/Project/Vintageous/vi/text_objects.py",
+		"/Users/hp/Project/Vintageous/vi/units.py",
+		"/Users/hp/Project/Vintageous/vi/utils.py",
+		"/Users/hp/Project/Vintageous/vi/variables.py",
+		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/User/Projects/Vintagous.sublime-project",
+		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/User/.vintageousrc",
+		"/Users/hp/Dropbox/GitHub/Study/discrete_math/chapter2/dist.py",
+		"/Users/hp/Dropbox/GitHub/Study/discrete_math/chapter2/permu.txt",
+		"/Users/hp/Dropbox/GitHub/Study/discrete_math/chapter2/note.md",
+		"/Users/hp/Dropbox/GitHub/Study/discrete_math/chapter1/note.md",
+		"/Users/hp/Dropbox/GitHub/Study/discrete_math/chapter1/binary_conv.py",
+		"/Users/hp/Dropbox/GitHub/Study/study.sublime-project",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/Markdown (Standard).sublime-settings",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/Markdown.sublime-settings",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/MultiMarkdown.sublime-settings",
+		"/C/Users/hp/Python_Projects/Math_to_generic_prog/chp2/egypt_multi.py",
+		"/C/Users/hp/Python_Projects/Math_to_generic_prog/math_generic.sublime-project",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/MarkdownEditing/Markdown (Standard).sublime-settings",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/MarkdownEditing/README.md",
+		"/C/Users/hp/Python_Projects/recursive/trampline.py",
+		"/C/Users/hp/Python_Projects/recursive/trampoline.md",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/Origami/Default (Windows).sublime-keymap",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/Origami/Origami.sublime-settings",
+		"/C/Users/hp/Python_Projects/recursive/time_traveling.md",
+		"/C/Users/hp/Python_Projects/recursive/time-traveling.py",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/Package Control.sublime-settings",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/AdvancedNewFile/README.md",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/Cheat Sheets/cheat-sheets/Git.cheatsheet",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/PlainTasks/messages/Tutorial.todo",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/Cheat Sheets/cheat-sheets/Sublime Text.cheatsheet",
+		"/C/Users/hp/Python_Projects/recursive/tail_recurse.py",
+		"/C/Users/hp/Python_Projects/recursive/recurse.sublime-project",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/AutoPep8/Default (Windows).sublime-keymap",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/AutoPep8.sublime-settings",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/AutoPEP8/AutoPep8 (Windows).sublime-settings",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/AutoPep8/AutoPep8.sublime-settings",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/ColorHighlighter.sublime-settings",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/Color Highlighter/ColorHighlighter.sublime-settings",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/SublimeLinter.sublime-settings",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/Anaconda/README.md",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/AdvancedNewFile.sublime-settings"
+	],
+	"find":
+	{
+		"height": 36.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"all.views",
+			"addlabels",
+			"add.label",
+			"regex",
+			"self.labels",
+			"jumplabel",
+			"label.gen",
+			"self",
+			"add.region",
+			"visible_region",
+			"visible",
+			"all.views",
+			"mylabels",
+			"add.*label",
+			"acejumpadd",
+			"find",
+			"self.window",
+			"get.active.views",
+			"vintagous",
+			"ignored.packages",
+			"sublime.*view",
+			"clamp",
+			"while",
+			"view.substr",
+			"sublime.view",
+			"gla",
+			"sublime.view",
+			"new_sels",
+			"clamp",
+			"hints",
+			"allcontent",
+			"big.v",
+			"font",
+			"vintagous",
+			"down",
+			"        \n",
+			"        ",
+			"            \n",
+			"        \n",
+			"                 \n",
+			"        ",
+			"        \n",
+			"    ",
+			"	\n",
+			"		\n",
+			"font"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"j"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "sublime_motion_plugin.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8538,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content"
+							],
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 36.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": false,
+	"output.exec":
+	{
+		"height": 130.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "sublime_motion.sublime-project",
+	"replace":
+	{
+		"height": 52.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"bigv",
+				"Vintageous/tests/vi/test_big_word_reverse.py"
+			],
+			[
+				"big_v",
+				"Vintageous/tests/vi/test_big_word_reverse.py"
+			],
+			[
+				"",
+				"discrete_math/chapter2/permu.txt"
+			],
+			[
+				"dist",
+				"discrete_math/chapter2/dist.py"
+			],
+			[
+				"permu",
+				"discrete_math/chapter2/permu.txt"
+			],
+			[
+				"note",
+				"discrete_math/chapter2/note.md"
+			],
+			[
+				"2note",
+				"discrete_math/chapter2/note.md"
+			],
+			[
+				"pre",
+				"~/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings"
+			],
+			[
+				"1note",
+				"discrete_math/chapter1/note.md"
+			],
+			[
+				"math",
+				"math_generic.sublime-project"
+			],
+			[
+				"md",
+				"trampoline.md"
+			],
+			[
+				"recurse",
+				"recurse.sublime-project"
+			],
+			[
+				"tail",
+				"tail_recurse.py"
+			],
+			[
+				"prefs",
+				"C:\\Users\\hp\\AppData\\Roaming\\Sublime Text 3\\Packages\\User\\Preferences.sublime-settings"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"## Customization"
+			]
+		],
+		"width": 392.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 237.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+		"max_columns": 5
+	}
+}

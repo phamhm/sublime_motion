@@ -2,5 +2,21 @@
     {
         "keys": ["super+shift+,"],
         "command": "sublime_motion"
+    },
+    {
+        "keys": ["super+shift+;"],
+        "command": "sublime_motion_above"
+    },
+    {
+        "keys": ["super+shift+'"],
+        "command": "sublime_motion_below"
+    },
+    {
+        "keys": ["super+shift+."],
+        "command": "sublime_motion_left"
+    },
+    {
+        "keys": ["super+shift+/"],
+        "command": "sublime_motion_right"
     }
 ]
