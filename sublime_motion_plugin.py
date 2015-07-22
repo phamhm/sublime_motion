@@ -89,8 +89,7 @@ label_gen = label_generator_double()
 
 class SublimeMotionCommand(sublime_plugin.WindowCommand):
 
-    def __init__(self, *kargs, **kwargs):
-        super().__init__(*kargs, **kwargs)
+    def init_settings(self):
         self.regex = self.set_regex()
         self.key = 'sublime_motion'
         self.panel_init_text = self.set_panel_init_text()
@@ -114,6 +113,7 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         global label_gen
+        self.init_settings()
         label_gen = self.set_label_gen()
         self.labels_adder()
         self.window.show_input_panel(self.panel_name, self.panel_init_text,
