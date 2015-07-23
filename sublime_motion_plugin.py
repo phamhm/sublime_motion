@@ -6,6 +6,7 @@ from itertools import chain
 from string import digits
 from string import ascii_letters
 
+REG_SPECIAL_CHARS = r'\\+*()[]{}^$?|:].,'
 
 class LabelObject(object):
 
@@ -45,13 +46,6 @@ class LabelObject(object):
             return self.viewid_regions[viewid]
         return None
 
-    def find_region_by_viewid_label(self, viewid, label):
-        try:
-            res = self.viewid_regions[viewid][label]
-        except KeyError:
-            res = None
-        return res
-
     def get_all_views(self):
         return self.all_views
 
@@ -70,56 +64,68 @@ class LabelObject(object):
 
     def empty_everything(self):
         if self.empty is False:
-            del self.viewid_regions
-            del self.label_regions
-            del self.viewid_label_regions
-            del self.all_views
+            # self.viewid_regions.clear()
+            self.label_regions.clear()
+            self.viewid_label_regions.clear()
+            self.all_views.clear()
         self.empty = True
 
 labels = None
+label_gen = None
+
+def label_generator_singledouble():
+    product =  (tup[0] + tup[1] for tup in permutations(digits+ascii_letters, 2))
+    return chain(ascii_letters,digits,product)
 
 def label_generator_double():
-    return (tup[0] + tup[1] for tup in permutations(ascii_letters+digits, 2))
-
-def label_generator_single():
-    return chain(ascii_letters, digits)
-
-label_gen = label_generator_double()
+    return  (tup[0] + tup[1] for tup in permutations(ascii_letters+digits, 2))
 
 
 class SublimeMotionCommand(sublime_plugin.WindowCommand):
 
-    def init_settings(self):
-        self.regex = self.set_regex()
-        self.key = 'sublime_motion'
-        self.panel_init_text = self.set_panel_init_text()
-        self.panel_name = self.set_panel_name()
-        self.max_panel_len = self.set_max_panel_len()
-
-    def set_label_gen(self):
-        return label_generator_double()
-
-    def set_regex(self):
-        return r'\b[^\W]'
-
-    def set_panel_name(self):
-        return 'Jump To'
-
-    def set_panel_init_text(self):
-        return ''
-
-    def set_max_panel_len(self):
-        return 2
-
-    def run(self):
+    def init_settings(self,*kargs,**kwargs):
         global label_gen
-        self.init_settings()
-        label_gen = self.set_label_gen()
-        self.labels_adder()
-        self.window.show_input_panel(self.panel_name, self.panel_init_text,
-                                     self.on_panel_done, self.on_panel_change,
-                                     self.on_panel_cancel)
 
+        self.key = 'sublime_motion'
+
+        self.panel_init_text = ''
+        self.panel_name = 'Jump To'
+        self.max_panel_len = 2
+
+        # available mode:[all,above,below,right,left,char,word]
+        self.mode="all"
+        self.regex = r'\b[^\W]'
+        self.multiple_selection = False
+
+        #setting the variables from the key-map
+        for setting in kwargs:
+            if hasattr(self,setting):
+                setattr(self,setting,kwargs[setting])
+
+        if self.mode == "all":
+            label_gen = label_generator_double()
+        # elif self.mode == "relative_line":
+        #     label_gen = label_generator_relative_num()
+        else:
+            label_gen = label_generator_singledouble()
+
+
+    def run(self,*kargs,**kwargs):
+        self.init_settings(*kargs,**kwargs)
+
+        if self.mode in ['char','word']:
+            self.label_add_special()
+        else:
+            self.labels_adder()
+            self.show_panel(self.panel_name, 
+                         self.panel_init_text,
+                         self.on_panel_done,
+                         self.on_panel_change,
+                         self.on_panel_cancel)
+
+    def show_panel(self,name, init_text, done=None, change=None, cancel=None):
+        self.window.show_input_panel(name, init_text,
+                                     done, change, cancel)
     def on_panel_done(self, input):
         global labels
 
@@ -131,35 +137,13 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
                 self.labels_remover(self.key)
 
                 self.window.focus_view(view)
-                view.run_command('jump_to_label', {"target": region.begin()})
+                view.run_command('jump_to_label', {"target": region.begin(),
+                        "multiple_selection":self.multiple_selection})
             else:
                 self.labels_remover(self.key)
 
     def on_panel_change(self, input):
         global labels
-
-        # if not labels.is_empty():
-        #     res = labels.find_region_by_label(input)
-        #     partial = labels.partial_labels_remap(input)
-
-        #     if res is not None and partial.is_empty():
-        #         view, region = res
-
-        #         self.labels_remover(self.key)
-
-        #         self.window.focus_view(view)
-        #         view.run_command('jump_to_label', {"target": region.begin()})
-
-        #         self.window.run_command("hide_panel", {"cancel": True})
-        #     elif res is None and not partial.is_empty():
-        #         self.labels_remover(self.key)
-        #         labels = partial
-
-        #         for view in labels.get_all_views().values():
-        #             view.run_command('draw_labels', {'key': self.key})
-        # else:
-        #     self.labels_remover(self.key)
-        #     self.window.run_command("hide_panel", {"cancel": True})
 
         if len(input)>self.max_panel_len:
             self.terminate_panel()
@@ -167,27 +151,29 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
         if not labels.is_empty():
             res = labels.find_region_by_label(input)
 
-            # if res is None and len(input)==self.max_panel_len:
-            #     self.terminate_panel()
-
             if res is not None:
                 view, region = res
                 self.labels_remover(self.key)
 
                 self.window.focus_view(view)
-                view.run_command('jump_to_label', {"target": region.begin()})
+                view.run_command('jump_to_label', {"target": region.begin(),
+                        "multiple_selection":self.multiple_selection})
 
                 self.window.run_command("hide_panel", {"cancel": True})
             elif len(input)>3:
                 self.terminate_panel()
         else:
             self.terminate_panel()
+
+
     def terminate_panel(self):
         self.labels_remover(self.key)
         self.window.run_command("hide_panel", {"cancel": True})
 
+
     def on_panel_cancel(self):
         self.labels_remover(self.key)
+
 
     def labels_adder(self):
         global labels
@@ -195,41 +181,98 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
         self.labels_remover(self.key)
 
         labels = LabelObject()
+        if self.mode == "all":
+            self.label_add_all()
+        elif self.mode in ["above","below","left","right"]:
+            self.label_add_partial()
+
+    def label_add_all(self):
         for group in range(self.window.num_groups()):
             view = self.window.active_view_in_group(group)
-            view.run_command(
-                'add_labels', {'regex': self.regex})
+            if self.mode=='char':
+                view.run_command(
+                    'add_labels', {'regex': self.regex,'literal':True})
+            else:
+                view.run_command(
+                    'add_labels', {'regex': self.regex})
             view.run_command('draw_labels', {'key': self.key})
 
-    # def labels_adder(self):
-    #     global labels
 
-    #     self.labels_remover(self.key)
+    def label_add_partial(self):
+        global labels
 
-    #     labels = LabelObject()
-    #     tmp_label=[]
+        self.labels_remover(self.key)
 
-    #     for group in range(self.window.num_groups()):
-    #         view = self.window.active_view_in_group(group)
-    #         # view.run_command('add_labels', {'regex': self.regex})
-    #         # view.run_command('draw_labels', {'key': self.key})
-    #         tmp_label.extend(self.Add_manager(view))
+        labels = LabelObject()
 
-    #     if len(tmp_label)>(len(ascii_letters)+len(digits)):
-    #         label_gen = label_generator_double()
-    #     else:
-    #         label_gen = label_generator_single()
+        view = self.window.active_view()
 
-    #     for (view,region) in tmp_label:
-    #         key = next(label_gen)
-    #         region = sublime.Region(
-    #             region.begin(), region.begin() + len(key))
-    #         labels.add(view, key, region)
+        cursor = view.sel()[0].begin()
+        beg = None
+        end = None
+        if self.mode == 'above':
+            beg = None
+            end = cursor
+        elif self.mode == 'below':
+            beg = cursor
+            end = None
+        elif self.mode == 'left':
+            beg = view.line(cursor).begin()
+            end = cursor
+        elif self.mode == 'right':
+            beg = cursor
+            end = view.line(cursor).end()
 
-    #     for view in labels.get_all_views().values():
-    #         view.run_command('draw_labels', {'key': self.key})
+        view.run_command(
+            'add_labels', {'regex': self.regex, 'beg': beg, 'end': end})
+        view.run_command('draw_labels', {'key': self.key})
+
+    def label_add_special(self):
+        
+        global labels
+
+        self.labels_remover(self.key)
+
+        labels = LabelObject()
+
+        self.show_panel("Enter "+self.mode.capitalize(),'',self.on_special_panel_done,
+                    self.on_special_panel_change,
+                    self.on_special_panel_cancel)
+
+    def on_special_panel_done(self,input):
+        if self.mode=='word':
+            self.regex=input
+            self.label_add_all()
+            self.window.run_command("hide_panel", {"cancel": True})
+
+            self.show_panel(self.panel_name, 
+                         self.panel_init_text,
+                         self.on_panel_done,
+                         self.on_panel_change,
+                         self.on_panel_cancel)
+
+    def on_special_panel_change(self,input):
+        if self.mode=='char' and len(input)==1:
+            self.regex=input
+
+            self.label_add_all()
+            self.window.run_command("hide_panel", {"cancel": True})
+
+            self.show_panel(self.panel_name, 
+                         self.panel_init_text,
+                         self.on_panel_done,
+                         self.on_panel_change,
+                         self.on_panel_cancel)
+
+    def on_special_panel_cancel(self):
+        pass
+
 
     def Add_manager(self, view, beg=None, end=None):
+        ''' 
+        DO NOT CALL
+        when used, this function may cause multiple 'undo' events
+        '''
         global labels
 
         if beg is None:
@@ -243,9 +286,6 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
         tmp_label = []
         for region in view.find_all(self.regex):
             if not region.empty() and work_region.contains(region):
-                # region = sublime.Region(
-                #     region.begin(), region.begin() + len(key))
-                # labels.add(self.view, key, region)
                 tmp_label.append((view,region))
         return tmp_label
 
@@ -261,11 +301,10 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
 
 
 class AddLabelsCommand(sublime_plugin.TextCommand):
-
-    ''' need an object for :
+    ''' 
     '''
 
-    def run(self, edit, regex, beg=None, end=None):
+    def run(self, edit, regex, beg=None, end=None, literal = False):
         global labels, label_gen
 
         if beg is None:
@@ -276,12 +315,33 @@ class AddLabelsCommand(sublime_plugin.TextCommand):
 
         work_region = sublime.Region(beg, end)
 
-        for region in self.view.find_all(regex):
-            if not region.empty() and work_region.contains(region):
+        # find_all returns a huge amount of regions that is not in the visible region
+        # if literal is True:
+        #     matched_regions = self.view.find_all(regex,sublime.LITERAL)
+        # else:
+        #     matched_regions = self.view.find_all(regex)
+        # for region in matched_regions:
+        #     if not region.empty() and work_region.contains(region):
+        #         key = next(label_gen)
+        #         region = sublime.Region(
+        #             region.begin(), region.begin() + len(key))
+        #         labels.add(self.view, key, region)
+
+        while(beg is not None and beg < end):
+            if literal is True:
+                region = self.view.find(regex,beg,sublime.LITERAL)
+            else:
+                region = self.view.find(regex,beg)
+
+            if region is not None and not region.empty() and work_region.contains(region):
+                beg = region.end()
+
                 key = next(label_gen)
                 region = sublime.Region(
                     region.begin(), region.begin() + len(key))
                 labels.add(self.view, key, region)
+            else:
+                beg = None
 
 
 class DrawLabelsCommand(sublime_plugin.TextCommand):
@@ -303,7 +363,7 @@ class DrawLabelsCommand(sublime_plugin.TextCommand):
 
 class RemoveLabelsCommand(sublime_plugin.TextCommand):
 
-    """Command for removing labels from the views"""
+    """Command for removing labels from views"""
 
     def run(self, edit, key):
         self.view.erase_regions(key)
@@ -311,85 +371,11 @@ class RemoveLabelsCommand(sublime_plugin.TextCommand):
         self.view.run_command("undo")
 
 class JumpToLabelCommand(sublime_plugin.TextCommand):
+    """Command to jump to the selected label from the views"""
 
-    def run(self, edit, target):
-        self.view.sel().clear()
+    def run(self, edit, target, multiple_selection = False):
+        if not multiple_selection:
+            self.view.sel().clear()
         region = sublime.Region(target)
         self.view.sel().add(region)
         self.view.show(target)
-
-
-class SublimeMotionBelowCommand(SublimeMotionCommand):
-    def set_label_gen(self):
-        return label_generator_single()
-
-    def labels_adder(self):
-        global labels
-
-        self.labels_remover(self.key)
-
-        labels = LabelObject()
-        view=self.window.active_view()
-        view.run_command(
-            'add_labels',
-            {'regex': self.regex, 'beg': view.sel()[0].begin()}
-        )
-        view.run_command('draw_labels', {'key': self.key})
-
-
-class SublimeMotionAboveCommand(SublimeMotionCommand):
-    def set_label_gen(self):
-        return label_generator_single()
-
-    def labels_adder(self):
-        global labels
-
-        self.labels_remover(self.key)
-
-        labels = LabelObject()
-        view=self.window.active_view()
-        view.run_command(
-            'add_labels', {'regex': self.regex,
-                           'end': view.sel()[0].begin()})
-        view.run_command('draw_labels', {'key': self.key})
-
-
-class SublimeMotionRightCommand(SublimeMotionCommand):
-    def set_label_gen(self):
-        return label_generator_single()
-
-    def labels_adder(self):
-        global labels
-
-        self.labels_remover(self.key)
-
-        labels = LabelObject()
-
-        view = self.window.active_view()
-        cursor = view.sel()[0].begin()
-        beg = cursor
-        end = view.line(cursor).end()
-        view.run_command(
-            'add_labels', {'regex': self.regex, 'beg': beg, 'end': end})
-        view.run_command('draw_labels', {'key': self.key})
-
-
-class SublimeMotionLeftCommand(SublimeMotionCommand):
-    def set_label_gen(self):
-        return label_generator_single()
-
-    def labels_adder(self):
-        global labels
-
-        self.labels_remover(self.key)
-
-        labels = LabelObject()
-        group =self.window.active_view()
-
-        view = self.window.active_view()
-        cursor = view.sel()[0].begin()
-        beg = view.line(cursor).begin()
-        end = cursor
-        view.run_command(
-            'add_labels', {'regex': self.regex, 'beg': beg, 'end': end})
-        view.run_command('draw_labels', {'key': self.key})
