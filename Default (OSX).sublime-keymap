@@ -1,22 +1,67 @@
 [
     {
-        "keys": ["super+shift+,"],
+        "keys": ["command+shift+,"],
         "command": "sublime_motion"
     },
     {
-        "keys": ["super+shift+;"],
-        "command": "sublime_motion_above"
+        "keys": ["command+'"],
+        "command": "sublime_motion",
+        "args":{"mode":"below"}
     },
     {
-        "keys": ["super+shift+'"],
-        "command": "sublime_motion_below"
+        "keys": ["command+;"],
+        "command": "sublime_motion",
+        "args":{"mode":"above"}
     },
     {
-        "keys": ["super+shift+."],
-        "command": "sublime_motion_left"
+        "keys": ["command+."],
+        "command": "sublime_motion",
+        "args":{"mode":"right"}
     },
     {
-        "keys": ["super+shift+/"],
-        "command": "sublime_motion_right"
-    }
+        "keys": ["command+,"],
+        "command": "sublime_motion",
+        "args":{"mode":"left"}
+    },
+
+    {
+        "keys": ["command+shift+'"],
+        "command": "sublime_motion",
+        "args":{"mode":"below","multiple_selection":true}
+    },
+    {
+        "keys": ["command+shift+;"],
+        "command": "sublime_motion",
+        "args":{"mode":"above","multiple_selection":true}
+    },
+    {
+        "keys": ["command+shift+."],
+        "command": "sublime_motion",
+        "args":{"mode":"right","multiple_selection":true}
+    },
+    {
+        "keys": ["command+shift+,"],
+        "command": "sublime_motion",
+        "args":{"mode":"left","multiple_selection":true}
+    },
+    {
+        "keys": ["command+shift+c"],
+        "command": "sublime_motion",
+        "args":{"mode":"char","regex":"","multiple_selection":false}
+    },
+    {
+        "keys": ["command+shift+alt+c"],
+        "command": "sublime_motion",
+        "args":{"mode":"char","regex":"","multiple_selection":true}
+    },
+    {
+        "keys": ["command+shift+w"],
+        "command": "sublime_motion",
+        "args":{"mode":"word","regex":"","multiple_selection":false}
+    },
+    {
+        "keys": ["command+shift+alt+w"],
+        "command": "sublime_motion",
+        "args":{"mode":"word","regex":"","multiple_selection":true}
+    },
 ]

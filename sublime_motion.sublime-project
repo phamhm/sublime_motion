@@ -1,4 +1,17 @@
 {
+	"SublimeLinter":
+	{
+	    "@python": 3.4,
+	    "linters":
+	    {
+	        "pep8":
+	        {
+	            "@disable": false,
+	            "ignore": "E127,E128",
+	            "max-line-length": 512
+	        }
+	    }
+	},
 	"build_systems":
 	[
 		{
