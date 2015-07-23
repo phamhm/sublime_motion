@@ -23,6 +23,7 @@ class LabelObject(object):
         self.label_regions = dict()
         self.viewid_label_regions = dict()
         self.all_views = dict()
+        self.multiple_marks = []
         self.empty = True
 
     def add(self, view, label, region):
@@ -37,7 +38,20 @@ class LabelObject(object):
             self.viewid_regions[viewid][label] = region
 
         if label not in self.label_regions:
-            self.label_regions[label] = (view, region,)
+            label_len = len(label)
+            if label_len > 1:
+                partial_label = label[0:label_len-1]
+            else:
+                partial_label=None
+
+                """what do i need to redraw?
+
+                 view, labels, region
+                """
+            if partial_label is not None and partial_label in self.label_regions:
+                self.multiple_marks.append((label, view, region))
+
+            self.label_regions[label] = (view, region)
 
         if viewid not in self.all_views:
             self.all_views[viewid] = view
@@ -48,6 +62,9 @@ class LabelObject(object):
         if label in self.label_regions:
             return self.label_regions[label]
         return None
+
+    def get_region_by_label(self):
+        return self.label_regions
 
     def get_regions_by_viewid(self, viewid):
         if viewid in self.viewid_regions:
@@ -110,12 +127,12 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
             if hasattr(self,setting):
                 setattr(self,setting,kwargs[setting])
 
-        if self.mode == "all":
-            LABEL_GEN = label_generator_double()
+        # if self.mode == "all":
+        #     LABEL_GEN = label_generator_double()
         # elif self.mode == "relative_line":
         #     LABEL_GEN = label_generator_relative_num()
-        else:
-            LABEL_GEN = label_generator_singledouble()
+        # else:
+        LABEL_GEN = label_generator_singledouble()
 
 
     def run(self,*kargs,**kwargs):
@@ -153,11 +170,27 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
     def on_panel_change(self, input):
         global LABELS
 
-        if len(input)>self.max_panel_len:
+        if len(input) == 0 and not LABELS.is_empty():
+            for view in LABELS.get_all_views().values():
+                view.run_command('draw_labels', {'key': self.key})
+        elif len(input)>self.max_panel_len:
             self.terminate_panel()
 
-        if not LABELS.is_empty():
+        if not LABELS.is_empty() and len(input)>0:
             res = LABELS.find_region_by_label(input)
+
+            # print('debug res',res)
+            # if res is not None and res[0] is True:
+            #     tmp_label_region = LABELS.get_region_by_label()
+            #     print('debug ',len(tmp_label_region),input)
+            #     for view in LABELS.get_all_views().values():
+            #         view.run_command('remove_labels', {'key': self.key})
+            #     # for (multiple_flag,view,region) in LABELS.get_region_by_label().values():
+            #     #     print('debug label',input,region)
+            #     #     if multiple_flag is True:
+            #     #         view.run_command('draw_labels', {'key': self.key})
+            #     return
+
 
             if res is not None:
                 view, region = res
@@ -170,7 +203,7 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
                 self.window.run_command("hide_panel", {"cancel": True})
             elif len(input)>3:
                 self.terminate_panel()
-        else:
+        elif len(input)>0:
             self.terminate_panel()
 
 
@@ -203,7 +236,7 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
             else:
                 view.run_command(
                     'add_labels', {'regex': self.regex})
-            view.run_command('draw_labels', {'key': self.key})
+            # view.run_command('draw_labels', {'key': self.key})
 
 
     def label_add_partial(self):
@@ -233,7 +266,7 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
 
         view.run_command(
             'add_labels', {'regex': self.regex, 'beg': beg, 'end': end})
-        view.run_command('draw_labels', {'key': self.key})
+        # view.run_command('draw_labels', {'key': self.key})
 
     def label_add_special(self):
 
@@ -367,6 +400,7 @@ class DrawLabelsCommand(sublime_plugin.TextCommand):
                 self.view.replace(edit, region, label)
 
             self.view.add_regions(key, self.regions, 'invalid')
+# need a draw partial label
 
 
 class RemoveLabelsCommand(sublime_plugin.TextCommand):

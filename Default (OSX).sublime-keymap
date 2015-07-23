@@ -1,6 +1,6 @@
 [
     {
-        "keys": ["command+shift+,"],
+        "keys": ["command+alt+shift+,"],
         "command": "sublime_motion"
     },
     {
