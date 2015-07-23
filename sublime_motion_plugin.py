@@ -2,6 +2,10 @@
 TODO:
 1. visual mode selection from current pointer to mark
 2. redraw in case multiple LABELS start with the same letter.
+3. Currently, in multiple cursor mode, we can only choose one mark at a time.
+    I'd like to refresh the panel to select multiple marks. Like choose a range
+    of marks like [1-3] or provide a list of marks to select. May have issue
+    with single and double char marks.
 '''
 
 import sublime
