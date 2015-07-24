@@ -8,6 +8,13 @@ TODO:
     with single and double char marks.
 4. change tuple to namedtuple
 5. two char label will overwrite the CRLF if the word at label is shorter than the label
+
+6. there is only one view, not multiple view. all the view need to be self.view.
+    class LabelObject has view and get all views. all that needs to go away.
+    there may be a function later to deal with views in different panel
+    Like drawing stuff in different views
+
+7. Redraw doesn't have to undo then replace again with a small subset. redraw can be about changing the scope of everything else and leave the subset at the current scope
 '''
 
 import sublime
@@ -109,11 +116,14 @@ def label_generator_double():
     return  (tup[0] + tup[1] for tup in permutations(ascii_letters+digits, 2))
 
 
-class SublimeMotionCommand(sublime_plugin.WindowCommand):
+class SublimeMotionCommand(sublime_plugin.TextCommand):
 
-    def init_settings(self,*kargs,**kwargs):
+    def init_settings(self,edit,*kargs,**kwargs):
         global LABEL_GEN
-        global LABELS,REDRAW_LABELS
+        global LABELS
+        global REDRAW_LABELS
+
+        self.edit=edit
 
         LABELS.clear(), REDRAW_LABELS.clear()
 
@@ -138,8 +148,8 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
         LABEL_GEN = label_generator_singledouble()
 
 
-    def run(self,*kargs,**kwargs):
-        self.init_settings(*kargs,**kwargs)
+    def run(self,edit,*kargs,**kwargs):
+        self.init_settings(edit,*kargs,**kwargs)
 
         if self.mode in ['char','word']:
             self.label_add_special()
@@ -152,7 +162,7 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
                          self.on_panel_cancel)
 
     def show_panel(self,name, init_text, done=None, change=None, cancel=None):
-        self.window.show_input_panel(name, init_text,
+        self.view.window().show_input_panel(name, init_text,
                                      done, change, cancel)
 
     def on_panel_done(self, input):
@@ -166,13 +176,13 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
                 viewid, region = res[0][1:]
 
                 view = LABELS.get_all_views()[viewid]
-                self.labels_remover(self.key)
-                # self.window.focus_view(view)
+                self.labels_remover()
+                # self.view.window().focus_view(view)
                 view.run_command('jump_to_label', {"target": region.begin(),
                         "multiple_selection":self.multiple_selection,
                         "select_till":self.select_till})
 
-        self.labels_remover(self.key)
+        self.labels_remover()
 
 
     def on_panel_change(self, input):
@@ -183,7 +193,8 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
         if len(input) == 0 and not LABELS.is_empty():
             for view in LABELS.get_all_views().values():
                 if REDRAW_LABELS:
-                    view.run_command('buffer_undo', {'key': self.key})
+                    # view.run_command('buffer_undo', {'key': self.key})
+                    BufferUndoCommand(self.view,self.edit,self.key)
                 view.run_command('draw_labels', {'key': self.key})
         elif len(input)>self.max_panel_len:
             self.terminate_panel()
@@ -193,7 +204,8 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
 
             if res is not None and len(res)>1:
                 for view in LABELS.get_all_views().values():
-                    view.run_command('buffer_undo', {'key': self.key})
+                    # view.run_command('buffer_undo', {'key': self.key})
+                    BufferUndoCommand(self.view,self.edit,self.key)
 
                 REDRAW_LABELS.clear()
                 for item in res:
@@ -213,13 +225,13 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
 
                 view = LABELS.get_all_views()[viewid]
 
-                self.labels_remover(self.key)
-                # self.window.focus_view(view)
+                self.labels_remover()
+                # self.view.window().focus_view(view)
                 view.run_command('jump_to_label', {"target": region.begin(),
                         "multiple_selection":self.multiple_selection,
                         "select_till":self.select_till})
 
-                self.window.run_command("hide_panel", {"cancel": True})
+                self.view.window().run_command("hide_panel", {"cancel": True})
             elif len(input)>3:
                 self.terminate_panel()
         elif len(input)>0:
@@ -227,19 +239,19 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
 
 
     def terminate_panel(self):
-        self.labels_remover(self.key)
-        self.window.run_command("hide_panel", {"cancel": True})
+        self.labels_remover()
+        self.view.window().run_command("hide_panel", {"cancel": True})
 
 
     def on_panel_cancel(self):
         print('on cancel')
-        self.labels_remover(self.key)
+        self.labels_remover()
 
 
     def labels_adder(self):
         global LABELS
 
-        self.labels_remover(self.key)
+        self.labels_remover()
 
         if self.mode == "anything":
             self.label_add_all()
@@ -247,23 +259,23 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
             self.label_add_partial()
 
     def label_add_all(self):
-        for group in range(self.window.num_groups()):
-            view = self.window.active_view_in_group(group)
-            if self.mode=='char':
-                view.run_command(
-                    'add_labels', {'regex': self.regex,'literal':True})
-            else:
-                view.run_command(
-                    'add_labels', {'regex': self.regex})
+        # for group in range(self.view.num_groups()):
+        # view = self.view.active_view_in_group(group)
+        if self.mode=='char':
+            AddLabelsCommand(self.view, self.edit, self.regex,
+                             LABELS,LABEL_GEN, literal=True)
+        else:
+            AddLabelsCommand(self.view, self.edit, self.regex,
+                             LABELS,LABEL_GEN)
 
     def label_add_partial(self):
         global LABELS
 
-        self.labels_remover(self.key)
+        self.labels_remover()
 
         LABELS = LabelObject()
 
-        view = self.window.active_view()
+        view = self.view.window().active_view()
 
         cursor = view.sel()[0].begin()
         beg = None
@@ -281,14 +293,14 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
             beg = cursor
             end = view.line(cursor).end()
 
-        view.run_command(
-            'add_labels', {'regex': self.regex, 'beg': beg, 'end': end})
+        AddLabelsCommand(self.view, self.edit, self.regex,
+                         LABELS, LABEL_GEN, beg, end)
 
     def label_add_special(self):
 
         global LABELS
 
-        self.labels_remover(self.key)
+        self.labels_remover()
 
         LABELS = LabelObject()
 
@@ -300,7 +312,7 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
         if self.mode=='word':
             self.regex=input
             self.label_add_all()
-            self.window.run_command("hide_panel", {"cancel": True})
+            self.view.window().run_command("hide_panel", {"cancel": True})
 
             self.show_panel(self.panel_name,
                          self.panel_init_text,
@@ -313,7 +325,7 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
             self.regex=input
 
             self.label_add_all()
-            self.window.run_command("hide_panel", {"cancel": True})
+            self.view.window().run_command("hide_panel", {"cancel": True})
 
             self.show_panel(self.panel_name,
                          self.panel_init_text,
@@ -346,46 +358,60 @@ class SublimeMotionCommand(sublime_plugin.WindowCommand):
                 tmp_label.append((view,region))
         return tmp_label
 
-    def labels_remover(self, key):
+    def labels_remover(self):
         global LABELS, REDRAW_LABELS
 
         if not LABELS.is_empty():
             for view in LABELS.get_all_views().values():
-                view.run_command('buffer_undo', {'key': key})
+                # view.run_command('buffer_undo', {'key': key})
+                BufferUndoCommand(self.view,self.edit,self.key)
         REDRAW_LABELS.clear()
         LABELS.clear()
 
+def BufferUndoCommand(view,edit,key):
+    """Command for removing LABELS from views"""
+    view.erase_regions(key)
+    view.end_edit(edit)
+    view.run_command("undo")
 
-class AddLabelsCommand(sublime_plugin.TextCommand):
-    '''
-    '''
-    def run(self, edit, regex, beg=None, end=None, literal = False):
-        global LABELS, LABEL_GEN
 
-        if beg is None:
-            beg = self.view.visible_region().begin()
+def AddLabelsCommand(view, edit, regex, LABELS,LABEL_GEN,beg=None,  end=None, literal = False):
+    if beg is None:
+        beg = view.visible_region().begin()
 
-        if end is None:
-            end = self.view.visible_region().end()
+    if end is None:
+        end = view.visible_region().end()
 
-        work_region = sublime.Region(beg, end)
+    work_region = sublime.Region(beg, end)
 
-        while(beg is not None and beg < end):
-            if literal is True:
-                region = self.view.find(regex,beg,sublime.LITERAL)
-            else:
-                region = self.view.find(regex,beg)
+    while(beg is not None and beg < end):
+        if literal is True:
+            region = view.find(regex,beg,sublime.LITERAL)
+        else:
+            region = view.find(regex,beg)
 
-            if region is not None and not region.empty() and work_region.contains(region):
-                beg = region.end()
+        if region is not None and not region.empty() and work_region.contains(region):
+            label = ''.join(next(LABEL_GEN))
 
-                label = ''.join(next(LABEL_GEN))
+            # this won't work well, when calling REDRAW, this changed will be wiped out by the RemoveLabel command and the
+            # "undo" run_command. Need this to persist through out the file.
+            #
+            # need a different sublimt.Edit to make the change here persistent.
+            word_region = view.word(region)
+            target_size = word_region.end() - word_region.begin()
+            counter = 0
+            print('target_size',target_size,'word',view.substr(view.word(region)))
+            while (target_size+counter)<len(label):
+                view.insert(edit, region.end()+counter ,' ')
+                counter +=1
 
-                region = sublime.Region(
-                    region.begin(), region.begin() + len(label))
-                LABELS.add(self.view, label, region)
-            else:
-                beg = None
+            beg = region.end()+counter
+
+            region = sublime.Region(
+                region.begin(), region.begin() + len(label))
+            LABELS.add(view, label, region)
+        else:
+            return
 
 
 class DrawLabelsCommand(sublime_plugin.TextCommand):
@@ -425,14 +451,6 @@ class AddSpaceCommand(sublime_plugin.TextCommand):
     '''add space to the end of the letter'''
     def run(self, edit, key):
         pass
-
-class BufferUndoCommand(sublime_plugin.TextCommand):
-    """Command for removing LABELS from views"""
-
-    def run(self, edit, key):
-        self.view.erase_regions(key)
-        self.view.end_edit(edit)
-        self.view.run_command("undo")
 
 class JumpToLabelCommand(sublime_plugin.TextCommand):
     """Command to jump to the selected label from the views"""
