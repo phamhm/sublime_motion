@@ -1,6 +1,6 @@
 [
     {
-        "keys": ["ctrl+alt+shift+,"],
+        "keys": ["ctrl+alt+shift+]"],
         "command": "sublime_motion"
     },
     {
@@ -30,19 +30,35 @@
         "args":{"mode":"below","multiple_selection":true}
     },
     {
+        "keys": ["ctrl+shift+alt+'"],
+        "command": "sublime_motion",
+        "args":{"mode":"below","select_till":true}
+    },
+
+    {
         "keys": ["ctrl+shift+;"],
         "command": "sublime_motion",
         "args":{"mode":"above","multiple_selection":true}
     },
     {
-        "keys": ["ctrl+shift+."],
+        "keys": ["ctrl+shift+alt+;"],
         "command": "sublime_motion",
-        "args":{"mode":"right","multiple_selection":true}
+        "args":{"mode":"above","select_till":true}
+    },
+    {
+        "keys": ["ctrl+shift+alt+."],
+        "command": "sublime_motion",
+        "args":{"mode":"right","select_till":true}
     },
     {
         "keys": ["ctrl+shift+,"],
         "command": "sublime_motion",
         "args":{"mode":"left","multiple_selection":true}
+    },
+    {
+        "keys": ["ctrl+shift+alt+,"],
+        "command": "sublime_motion",
+        "args":{"mode":"left","select_till":true}
     },
     {
         "keys": ["ctrl+shift+c"],
