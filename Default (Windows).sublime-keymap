@@ -62,8 +62,8 @@
     },
     {
         "keys": ["ctrl+shift+c"],
-        "command": "sublime_motion",
-        "args":{"mode":"char","regex":"","multiple_selection":false}
+        "command": "sublime_motion_window_hack",
+        "args":{"mode":"char","multiple_selection":false}
     },
     {
         "keys": ["ctrl+shift+alt+c"],
@@ -72,8 +72,8 @@
     },
     {
         "keys": ["ctrl+shift+w"],
-        "command": "sublime_motion",
-        "args":{"mode":"word","regex":"","multiple_selection":false}
+        "command": "sublime_motion_window_hack",
+        "args":{"multiple_selection":false}
     },
     {
         "keys": ["ctrl+shift+alt+w"],

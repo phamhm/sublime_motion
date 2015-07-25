@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"syn",
+				"current_syntax"
+			],
+			[
+				"multipl",
+				"multiple_selection	(motion.py)"
+			],
+			[
+				"show",
+				"show_panel"
+			],
+			[
 				"gen",
 				"generate_str	function"
 			],
@@ -27,8 +39,16 @@
 			"file": "sublime_motion_plugin.py",
 			"settings":
 			{
-				"buffer_size": 8538,
-				"line_ending": "Unix"
+				"buffer_size": 7844,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "motion.py",
+			"settings":
+			{
+				"buffer_size": 6744,
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -63,33 +83,61 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 169.0,
-		"last_filter": "remove",
+		"height": 375.0,
+		"last_filter": "python",
 		"selected_items":
 		[
 			[
-				"remove",
-				"Package Control: Remove Package"
+				"python",
+				"Set Syntax: Python"
 			],
 			[
 				"pep8",
 				"Anaconda: Autoformat PEP8 Errors"
 			],
 			[
-				"plugin",
-				"SublimeLinter: Create Linter Plugin"
+				"pyt",
+				"Set Syntax: Python"
+			],
+			[
+				"text",
+				"Set Syntax: Textile"
+			],
+			[
+				"pyth",
+				"Set Syntax: Python"
 			],
 			[
 				"user",
 				"Preferences: Settings - User"
 			],
 			[
-				":w",
-				":w - Save"
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
 			],
 			[
 				"pepe8",
 				"Anaconda: Autoformat PEP8 Errors"
+			],
+			[
+				"",
+				":w - Save"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				":w",
+				":w - Save"
+			],
+			[
+				"plugin",
+				"SublimeLinter: Create Linter Plugin"
 			],
 			[
 				":pep8",
@@ -140,16 +188,8 @@
 				"Preferences: Key Bindings - User"
 			],
 			[
-				"python",
-				"Set Syntax: Python"
-			],
-			[
 				"vintage",
 				"Vintageous: Reset"
-			],
-			[
-				"install",
-				"Package Control: Install Package"
 			],
 			[
 				"prev",
@@ -328,7 +368,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 521.0
+		"width": 450.0
 	},
 	"console":
 	{
@@ -353,8 +393,18 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/sublime_motion"
+	],
 	"file_history":
 	[
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/sublime_motion/motion.py",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/sublime_motion/Default (Windows).sublime-keymap",
+		"/C/Program Files/Sublime Text 3/Packages/C#.sublime-package",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/sublime_motion/sublime_motion_plugin.py",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/sublime_motion/Default (OSX).sublime-keymap",
 		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/test_plugins/test_plugins.py",
 		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/test_plugins/Default (OSX).sublime-keymap",
 		"/Users/hp/Project/ace-jump-sublime/ace_jump.py",
@@ -403,7 +453,6 @@
 		"/Users/hp/Dropbox/GitHub/Study/discrete_math/chapter1/note.md",
 		"/Users/hp/Dropbox/GitHub/Study/discrete_math/chapter1/binary_conv.py",
 		"/Users/hp/Dropbox/GitHub/Study/study.sublime-project",
-		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/Markdown (Standard).sublime-settings",
 		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/Markdown.sublime-settings",
 		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/MultiMarkdown.sublime-settings",
@@ -443,9 +492,10 @@
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 95.0,
 		"where_history":
 		[
+			""
 		]
 	},
 	"find_state":
@@ -453,6 +503,45 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"show.at",
+			"syntax",
+			"set_syntax_file",
+			"syntax",
+			"JumpToLabelCommand",
+			"jumptolabelcommand",
+			"draw.labels",
+			"syntax",
+			"keys",
+			"scope",
+			"comment",
+			"matched.region",
+			"panel.name",
+			"jump to",
+			"get_user_regex",
+			"print",
+			"debug",
+			"self.literal",
+			"addlabelscommand",
+			"find",
+			"literal",
+			"input_panel",
+			"self.mode",
+			"labels_adder",
+			"labels.adder",
+			"self.regex",
+			"labels_adder",
+			"get_user_regex",
+			"get.user.regex",
+			"labels_adder",
+			"get_user_regex",
+			"jump to",
+			"get_user_regex",
+			"label_add_special",
+			"panel.name",
+			"jump to",
+			"char",
+			"special",
+			"char",
 			"all.views",
 			"addlabels",
 			"add.label",
@@ -509,15 +598,15 @@
 			"j"
 		],
 		"reverse": false,
-		"show_context": true,
-		"use_buffer2": true,
+		"show_context": false,
+		"use_buffer2": false,
 		"whole_word": false,
 		"wrap": true
 	},
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -526,15 +615,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8538,
+						"buffer_size": 7844,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								7623,
+								7623
 							]
 						],
 						"settings":
@@ -542,16 +631,95 @@
 							"BracketHighlighterBusy": false,
 							"bh_regions":
 							[
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
 								"bh_square",
 								"bh_square_center",
 								"bh_square_open",
 								"bh_square_close",
 								"bh_square_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
+							],
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3667.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "motion.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6744,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5906,
+								5906
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
@@ -562,48 +730,58 @@
 								"bh_double_quote_open",
 								"bh_double_quote_close",
 								"bh_double_quote_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
 								"bh_angle",
 								"bh_angle_center",
 								"bh_angle_open",
 								"bh_angle_close",
 								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
 								"bh_curly",
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
 								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
 								"bh_unmatched",
 								"bh_unmatched_center",
 								"bh_unmatched_open",
 								"bh_unmatched_close",
-								"bh_unmatched_content"
+								"bh_unmatched_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
 							],
 							"syntax": "Packages/Python/Python.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 2698.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -614,7 +792,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 36.0
+		"height": 37.0
 	},
 	"input":
 	{
@@ -649,7 +827,7 @@
 	},
 	"output.find_results":
 	{
-		"height": 0.0
+		"height": 126.0
 	},
 	"pinned_build_system": "",
 	"project": "sublime_motion.sublime-project",
@@ -664,6 +842,18 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"subpy",
+				"sublime_motion_plugin.py"
+			],
+			[
+				"sublimemopy",
+				"sublime_motion_plugin.py"
+			],
+			[
+				"win",
+				"Default (Windows).sublime-keymap"
+			],
 			[
 				"bigv",
 				"Vintageous/tests/vi/test_big_word_reverse.py"
@@ -734,16 +924,28 @@
 	},
 	"select_symbol":
 	{
-		"height": 392.0,
+		"height": 37.0,
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"jump",
+				"JumpToLabelCommand"
+			],
+			[
+				"draw",
+				"draw_labels"
+			],
+			[
+				"clear",
+				"clear"
+			],
 			[
 				"",
 				"## Customization"
 			]
 		],
-		"width": 392.0
+		"width": 378.0
 	},
 	"selected_group": 0,
 	"settings":
@@ -752,7 +954,7 @@
 	"show_minimap": true,
 	"show_open_files": true,
 	"show_tabs": true,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 237.0,
 	"status_bar_visible": true,
 	"template_settings":
