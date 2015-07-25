@@ -7,7 +7,7 @@ TODO:
     of marks like [1-3] or provide a list of marks to select. May have issue
     with single and double char marks.
 4. change tuple to namedtuple
-5. two char label will overwrite the CRLF if the word at label is shorter than the label
+a. two char label will overwrite the CRLF if the word at label is shorter than the label
 
 6. there is only one view, not multiple view. all the view need to be self.view.
     class LabelObject has view and get all views. all that needs to go away.
@@ -19,117 +19,30 @@ TODO:
 
 import sublime
 import sublime_plugin
-from itertools import product
-from itertools import permutations
-from itertools import chain
-from string import digits
-from string import ascii_letters
 
-class LabelObject(object):
+from .motion import LabelObject
 
-    def __init__(self):
-        self.viewid_regions = dict()  # key (viewid,label)
-        self.label_regions = dict()
-        self.viewid_label_regions = dict()
-        self.all_views = dict()
-        self.empty = True
-
-    def add(self, view, label, region):
-        viewid = view.id()
-
-        if self.empty is True:
-            self.empty = False
-
-        if viewid not in self.viewid_regions:
-            self.viewid_regions[viewid] = {label: region}
-        else:
-            self.viewid_regions[viewid][label] = region
-
-        if label not in self.label_regions:
-            label_len = len(label)
-            if label_len > 1:
-                partial_label = label[0:label_len-1]
-            else:
-                partial_label=None
-
-                """what do i need to redraw?
-
-                 view, labels, region
-                """
-            region_info = (label,view.id(),region,)
-            if partial_label is not None and partial_label in self.label_regions:
-                self.label_regions[partial_label].append(region_info)
-
-            self.label_regions[label] = [region_info]
-
-        if viewid not in self.all_views:
-            self.all_views[viewid] = view
-
-        self.viewid_label_regions[(viewid, label,)] = region
-
-    def find_region_by_label(self, label):
-        if label in self.label_regions:
-            return self.label_regions[label]
-        return None
-
-    def get_region_by_label(self):
-        return self.label_regions
-
-    def get_regions_by_viewid(self, viewid):
-        if viewid in self.viewid_regions:
-            return self.viewid_regions[viewid]
-        return None
-
-    def get_all_views(self):
-        return self.all_views
-
-    def is_empty(self):
-        return self.empty
-
-    def partial_labels_remap(self, key):
-        tmp_labels = LabelObject()
-
-        for label in self.label_regions:
-            if key != '' and key != label and key == label[0:len(key)]:
-                view, region = self.label_regions[label]
-                tmp_labels.add(view, label, region)
-
-        return tmp_labels
-
-    def clear(self):
-            # self.viewid_regions.clear()
-        self.label_regions.clear()
-        self.viewid_label_regions.clear()
-        self.all_views.clear()
-        self.empty = True
-
-LABELS = LabelObject()
-REDRAW_LABELS=dict()
-LABEL_GEN = None
-
-def label_generator_singledouble():
-    # product =  (tup[0] + tup[1] for tup in permutations(digits+ascii_letters, 2))
-    # return chain(ascii_letters,digits,product)
-    return chain(ascii_letters,digits[::-1],product(digits+ascii_letters,repeat=2))
-
-def label_generator_double():
-    return  (tup[0] + tup[1] for tup in permutations(ascii_letters+digits, 2))
+from .motion import BufferUndoCommand
+from .motion import AddLabelsCommand
+from .motion import JumpToLabelCommand
+from .motion import draw_labels
+from .motion import label_generator_singledouble
 
 
 class SublimeMotionCommand(sublime_plugin.TextCommand):
 
     def init_settings(self,edit,*kargs,**kwargs):
-        global LABEL_GEN
-        global LABELS
-        global REDRAW_LABELS
-
+        self.undo=False
+        self.matched_region = None
+        self.labels = LabelObject()
+        self.label_gen = label_generator_singledouble()
         self.edit=edit
 
-        LABELS.clear(), REDRAW_LABELS.clear()
+        self.scopes = ('invalid','comment')
+        self.keys = ('focus','unfocus')
+        self.unfocus_flag = sublime.DRAW_NO_FILL
 
-        self.key = 'sublime_motion'
-        self.buffer_mod = 'buffer_mod'
-
+        # panel variables
         self.panel_init_text = ''
         self.panel_name = 'Jump To'
         self.max_panel_len = 2
@@ -145,14 +58,20 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
             if hasattr(self,setting):
                 setattr(self,setting,kwargs[setting])
 
-        LABEL_GEN = label_generator_singledouble()
-
 
     def run(self,edit,*kargs,**kwargs):
+
         self.init_settings(edit,*kargs,**kwargs)
 
+        self.matched_region = None
         if self.mode in ['char','word']:
             self.label_add_special()
+            self.labels_adder()
+            self.show_panel(self.panel_name+' '+self.mode.capitalize(),
+                         self.panel_init_text,
+                         self.on_panel_done,
+                         self.on_panel_change,
+                         self.on_panel_cancel)
         else:
             self.labels_adder()
             self.show_panel(self.panel_name+' '+self.mode.capitalize(),
@@ -161,125 +80,62 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
                          self.on_panel_change,
                          self.on_panel_cancel)
 
+
     def show_panel(self,name, init_text, done=None, change=None, cancel=None):
         self.view.window().show_input_panel(name, init_text,
                                      done, change, cancel)
 
     def on_panel_done(self, input):
-        global LABELS
-
-        print('in panel done')
-
-        if not LABELS.is_empty():
-            res = LABELS.find_region_by_label(input)
-            if res is not None:
-                viewid, region = res[0][1:]
-
-                view = LABELS.get_all_views()[viewid]
-                self.labels_remover()
-                # self.view.window().focus_view(view)
-                view.run_command('jump_to_label', {"target": region.begin(),
-                        "multiple_selection":self.multiple_selection,
-                        "select_till":self.select_till})
-
-        self.labels_remover()
-
+        self.matched_region = self.labels.get_region_by_label(input)
+        self.undobuffer_and_jump()
 
     def on_panel_change(self, input):
-        global LABELS, REDRAW_LABELS
-
-        print('in panel change',input)
-
-        if len(input) == 0 and not LABELS.is_empty():
-            for view in LABELS.get_all_views().values():
-                if REDRAW_LABELS:
-                    # view.run_command('buffer_undo', {'key': self.key})
-                    BufferUndoCommand(self.view,self.edit,self.key)
-                view.run_command('draw_labels', {'key': self.key})
-        elif len(input)>self.max_panel_len:
+        if len(input)>self.max_panel_len:
             self.terminate_panel()
 
-        if not LABELS.is_empty() and len(input)>0:
-            res = LABELS.find_region_by_label(input)
+        if not input:
+            ''' for blank input, draw all labels '''
+            draw_labels(self.view,self.keys,
+                self.scopes,self.labels,
+                self.unfocus_flag)
+        else:
+            # if matched and multiple focuses then draw the focus labels
+            # if matched and don't refocus then jump
+            # if don't match and don't refocus, then terminate
+            multiple_focuses, self.matched_region = draw_labels(self.view,self.keys,self.scopes,
+                                                        self.labels,self.unfocus_flag,input)
 
-            if res is not None and len(res)>1:
-                for view in LABELS.get_all_views().values():
-                    # view.run_command('buffer_undo', {'key': self.key})
-                    BufferUndoCommand(self.view,self.edit,self.key)
-
-                REDRAW_LABELS.clear()
-                for item in res:
-                    viewid = item[1]
-                    if item[0].startswith(input):
-                        if viewid in REDRAW_LABELS:
-                            REDRAW_LABELS[viewid].append(item)
-                        else:
-                            REDRAW_LABELS[viewid] = [item]
-
-                for view in LABELS.get_all_views().values():
-                    view.run_command('draw_partial_labels',{'key':self.key})
-                return
-
-            if res is not None:
-                viewid, region = res[0][1:]
-
-                view = LABELS.get_all_views()[viewid]
-
-                self.labels_remover()
-                # self.view.window().focus_view(view)
-                view.run_command('jump_to_label', {"target": region.begin(),
-                        "multiple_selection":self.multiple_selection,
-                        "select_till":self.select_till})
-
-                self.view.window().run_command("hide_panel", {"cancel": True})
-            elif len(input)>3:
+            if self.matched_region and not multiple_focuses:
                 self.terminate_panel()
-        elif len(input)>0:
-            self.terminate_panel()
-
-
-    def terminate_panel(self):
-        self.labels_remover()
-        self.view.window().run_command("hide_panel", {"cancel": True})
+                self.undobuffer_and_jump()
 
 
     def on_panel_cancel(self):
-        print('on cancel')
-        self.labels_remover()
+        print('in change')
+        self.labels.clear()
+        if not self.undo:
+            self.undo = BufferUndoCommand(self.view,self.edit,self.keys)
+
+    def undobuffer_and_jump(self):
+        if not self.undo:
+            self.undo = BufferUndoCommand(self.view,self.edit,self.keys)
+        if self.matched_region:
+            JumpToLabelCommand(self.view,self.edit,self.keys, 
+                    self.matched_region.begin(),
+                    self.multiple_selection, self.select_till)
+
+    def terminate_panel(self):
+        self.view.window().run_command("hide_panel", {"cancel": True})
 
 
     def labels_adder(self):
-        global LABELS
+        self.labels.clear()
 
-        self.labels_remover()
+        cursor = self.view.sel()[0].begin()
 
-        if self.mode == "anything":
-            self.label_add_all()
-        elif self.mode in ["above","below","left","right"]:
-            self.label_add_partial()
+        literal = False
+        beg = end = None
 
-    def label_add_all(self):
-        # for group in range(self.view.num_groups()):
-        # view = self.view.active_view_in_group(group)
-        if self.mode=='char':
-            AddLabelsCommand(self.view, self.edit, self.regex,
-                             LABELS,LABEL_GEN, literal=True)
-        else:
-            AddLabelsCommand(self.view, self.edit, self.regex,
-                             LABELS,LABEL_GEN)
-
-    def label_add_partial(self):
-        global LABELS
-
-        self.labels_remover()
-
-        LABELS = LabelObject()
-
-        view = self.view.window().active_view()
-
-        cursor = view.sel()[0].begin()
-        beg = None
-        end = None
         if self.mode == 'above':
             beg = None
             end = cursor
@@ -287,22 +143,24 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
             beg = cursor
             end = None
         elif self.mode == 'left':
-            beg = view.line(cursor).begin()
+            beg = self.view.line(cursor).begin()
             end = cursor
         elif self.mode == 'right':
             beg = cursor
-            end = view.line(cursor).end()
+            end = self.view.line(cursor).end()
+        elif self.mode == 'char':
+            literal = True
+        else:
+            beg=self.view.visible_region().begin()
+            end=self.view.visible_region().end()
 
         AddLabelsCommand(self.view, self.edit, self.regex,
-                         LABELS, LABEL_GEN, beg, end)
+                         self.labels,self.label_gen,
+                         beg, end, literal)
+
 
     def label_add_special(self):
-
-        global LABELS
-
-        self.labels_remover()
-
-        LABELS = LabelObject()
+        # self.labels.clear()
 
         self.show_panel("Enter "+self.mode.capitalize(),'',self.on_special_panel_done,
                     self.on_special_panel_change,
@@ -311,7 +169,8 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
     def on_special_panel_done(self,input):
         if self.mode=='word':
             self.regex=input
-            self.label_add_all()
+            
+            self.labels_adder()
             self.view.window().run_command("hide_panel", {"cancel": True})
 
             self.show_panel(self.panel_name,
@@ -324,7 +183,7 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
         if self.mode=='char' and len(input)==1:
             self.regex=input
 
-            self.label_add_all()
+            self.labels_adder()
             self.view.window().run_command("hide_panel", {"cancel": True})
 
             self.show_panel(self.panel_name,
@@ -333,142 +192,8 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
                          self.on_panel_change,
                          self.on_panel_cancel)
 
-    def on_special_panel_cancel(self):
-        pass
+    def on_special_panel_cancel(self):pass
 
-
-    def Add_manager(self, view, beg=None, end=None):
-        '''
-        DO NOT CALL
-        when used, this function may cause multiple 'undo' events
-        '''
-        global LABELS
-
-        if beg is None:
-            beg = view.visible_region().begin()
-
-        if end is None:
-            end = view.visible_region().end()
-
-        work_region = sublime.Region(beg, end)
-
-        tmp_label = []
-        for region in view.find_all(self.regex):
-            if not region.empty() and work_region.contains(region):
-                tmp_label.append((view,region))
-        return tmp_label
 
     def labels_remover(self):
-        global LABELS, REDRAW_LABELS
-
-        if not LABELS.is_empty():
-            for view in LABELS.get_all_views().values():
-                # view.run_command('buffer_undo', {'key': key})
-                BufferUndoCommand(self.view,self.edit,self.key)
-        REDRAW_LABELS.clear()
-        LABELS.clear()
-
-def BufferUndoCommand(view,edit,key):
-    """Command for removing LABELS from views"""
-    view.erase_regions(key)
-    view.end_edit(edit)
-    view.run_command("undo")
-
-
-def AddLabelsCommand(view, edit, regex, LABELS,LABEL_GEN,beg=None,  end=None, literal = False):
-    if beg is None:
-        beg = view.visible_region().begin()
-
-    if end is None:
-        end = view.visible_region().end()
-
-    work_region = sublime.Region(beg, end)
-
-    while(beg is not None and beg < end):
-        if literal is True:
-            region = view.find(regex,beg,sublime.LITERAL)
-        else:
-            region = view.find(regex,beg)
-
-        if region is not None and not region.empty() and work_region.contains(region):
-            label = ''.join(next(LABEL_GEN))
-
-            # this won't work well, when calling REDRAW, this changed will be wiped out by the RemoveLabel command and the
-            # "undo" run_command. Need this to persist through out the file.
-            #
-            # need a different sublimt.Edit to make the change here persistent.
-            word_region = view.word(region)
-            target_size = word_region.end() - word_region.begin()
-            counter = 0
-            print('target_size',target_size,'word',view.substr(view.word(region)))
-            while (target_size+counter)<len(label):
-                view.insert(edit, region.end()+counter ,' ')
-                counter +=1
-
-            beg = region.end()+counter
-
-            region = sublime.Region(
-                region.begin(), region.begin() + len(label))
-            LABELS.add(view, label, region)
-        else:
-            return
-
-
-class DrawLabelsCommand(sublime_plugin.TextCommand):
-
-    def run(self, edit, key):
-        global LABELS
-
-
-        viewid = self.view.id()
-        region_map = LABELS.get_regions_by_viewid(viewid)
-        self.regions = []
-        if region_map is not None:
-            for label in region_map:
-                region = region_map[label]
-                self.regions.append(region)
-                self.view.replace(edit, region, label)
-
-            self.view.add_regions(key, self.regions, 'invalid')
-
-class DrawPartialLabelsCommand(sublime_plugin.TextCommand):
-
-    def run(self, edit, key):
-        global REDRAW_LABELS
-
-        self.regions = []
-
-        viewid = self.view.id()
-        if viewid in REDRAW_LABELS:
-            redraw_list = REDRAW_LABELS[viewid]
-            for (label,ignore,region) in redraw_list: # ignore=viewid, this is hackish, need to remove
-                self.view.replace(edit, region, label)
-                self.regions.append(region)
-            self.view.add_regions(key, self.regions, 'invalid')
-
-
-class AddSpaceCommand(sublime_plugin.TextCommand):
-    '''add space to the end of the letter'''
-    def run(self, edit, key):
-        pass
-
-class JumpToLabelCommand(sublime_plugin.TextCommand):
-    """Command to jump to the selected label from the views"""
-
-    def run(self, edit, target, multiple_selection = False, select_till = False):
-        region = sublime.Region(target)
-
-        if select_till is True:
-            region_list =[self.view.sel()[0].begin(),
-                        self.view.sel()[0].end(),
-                        region.begin(),
-                        region.end()]
-            beg = min(region_list)
-            end = max(region_list)
-            self.view.sel().add(sublime.Region(beg,end))
-        else:
-            if not multiple_selection:
-                self.view.sel().clear()
-            self.view.sel().add(region)
-
-        self.view.show(target)
+        self.labels.clear()
