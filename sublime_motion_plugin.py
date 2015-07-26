@@ -109,7 +109,8 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
         self.multiple_selection = False
         self.select_till = False
         self.matched_region = None
-        self.range_select = False
+        self.range_select_mode = False
+        self.range_select_list = []
 
         self.select_word = True
         self.current_syntax = self.view.settings().get('syntax')
@@ -144,20 +145,26 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
             draw_labels(self.view, self.keys,
                         self.scopes, self.labels,
                         self.unfocus_flag)
-        else:
-            # if matched and multiple focuses then draw the focus labels
-            # if matched and don't refocus then jump
-            # if don't match and don't refocus, then terminate
-            if self.range_select:
-                # need a function to parse the range and do dynamic label
-                # update
-                pass
-            else:
-                multiple_focuses, self.matched_region = \
-                    draw_labels(self.view, self.keys, self.scopes,
-                                self.labels, self.unfocus_flag, input)
+        elif self.range_select_mode:
+            '''
+            a,b,c,d0-d9,da-dz
+            use rpartition, while comma is not entered yet, it's the field we're drawing/parsing
+            '''
 
-            if self.matched_region and not multiple_focuses:
+            label_range = input.rpartition(',')[0]
+
+            focus_list = draw_labels_in_range(self.view, self.keys,
+                        self.scopes, self.labels,
+                        self.unfocus_flag, labels_range)
+
+            self.range_select_list.extend(focus_list)
+        else:
+            multiple_focuses, self.matched_region = \
+                draw_labels(self.view, self.keys, self.scopes,
+                            self.labels, self.unfocus_flag, input)
+
+            if self.matched_region and len(multiple_focuses) == 1:
+                print('should terminate',len(multiple_focuses))
                 self.terminate_panel()
                 self.undobuffer_and_jump()
 
@@ -174,8 +181,6 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
 
         if self.matched_region:
             JumpToLabelCommand(self.view, self.edit, self.keys,
-                               # need to take a list to make range_selection
-                               # work.
                                self.matched_region.begin(),
                                self.multiple_selection, self.select_till)
             self.view.set_syntax_file(self.current_syntax)

@@ -12,10 +12,12 @@ class LabelObject:
     def __init__(self):
         self.label_region = {}
         self.empty = True
+        self.focused_label = []
 
     def add_label_region(self, label, region, displacement):
         if self.empty:
             self.empty = False
+
         self.label_region[label] = (region, displacement)
 
     def is_empty(self):
@@ -27,6 +29,12 @@ class LabelObject:
 
         return None
 
+    def focused_query(self, label):
+        if label in self.focused_label:
+            return True
+
+        return False
+
     def get_region_by_range(self, beg_label, end_label=None):
 
         if not beg_label:
@@ -34,15 +42,16 @@ class LabelObject:
 
         region_list = []
         for label in self.label_region:
-            if end_label and label >= beg_label and label <= end_label:
-                region_list.append(self.label_region[label])
-            elif not end_label and label >= beg_label:
-                region_list.append(self.label_region[label])
+            if (end_label and label >= beg_label and label <= end_label) or (not end_label and label >= beg_label:
+                region_list.append(self.get_displaced_by_label(label))
 
         return region_list
 
     def get_all_regions(self):
         return [region for region in self.label_region.values()]
+
+    def get_all_labels(self):
+        return [label for label in self.label_region]
 
     def get_displaced_by_label(self, label):
         if label in self.label_region:
@@ -51,6 +60,25 @@ class LabelObject:
                                     region.end() + displacement)
             return region
         return None
+
+    def split_partial_label(self, partial_label):
+        focus_list = []
+        unfocus_list = []
+        matched_region = None
+
+        for (label, region) in self.label_region.items():
+            region, displacement = region
+            region = sublime.Region(region.begin() + displacement,
+                                    region.end() + displacement)
+            if label == partial_label:
+                matched_region = region
+
+            if label.startswith(partial_label):
+                focus_list.append(region)
+            else:
+                unfocus_list.append(region)
+
+        return (focus_list, unfocus_list, matched_region)
 
     def get_all_displaced_regions(self):
         res = []
@@ -68,14 +96,10 @@ class LabelObject:
 
 def BufferUndoCommand(view, edit, keys):
     """Command for removing LABELS from views"""
-    # print('in undo ',view.sel()[0])
     for key in keys:
-        print('debug key=', key)
         view.erase_regions(key)
-    # print('in undo ',view.sel()[0])
     view.end_edit(edit)
     view.run_command("undo")
-    # print('in undo ',view.sel()[0])
 
     return True
 
@@ -124,7 +148,6 @@ def JumpToLabelCommand(view, edit, keys, target_point, multiple_selection=False,
                        select_till=False, select_word=True):
 
     region = sublime.Region(target_point)
-    # print('before jump to label',region,view.sel()[0],target_point)
 
     if select_till is True:
         region_list = [view.sel()[0].begin(),
@@ -134,7 +157,6 @@ def JumpToLabelCommand(view, edit, keys, target_point, multiple_selection=False,
         beg = min(region_list)
         end = max(region_list)
         view.sel().add(sublime.Region(beg, end))
-        # print('during jump to label',region,view.sel()[0])
     else:
         if not multiple_selection:
             view.sel().clear()
@@ -142,22 +164,61 @@ def JumpToLabelCommand(view, edit, keys, target_point, multiple_selection=False,
             view.sel().add(view.word(target_point))
         else:
             view.sel().add(region)
-        # print('during jump to label',region,view.sel()[0])
-    # print('after jump to label',region,view.sel()[0])
 
     view.show(target_point)
 
 
-def draw_labels(view, keys, scopes, labels, unfocus_flag, partial_label=None):
-    '''
-    '''
-    multiple_focuses = True
-    matched_region = None
+def draw_labels_in_range(view, keys, scopes, labels,
+                         unfocus_flag, labels_range):
     focus_key, unfocus_key, viewing_key = keys
     focus_scope, unfocus_scope = scopes
 
     view.erase_regions(focus_key)
     view.erase_regions(unfocus_key)
+
+    focus_region = []
+    unfocus_region = []
+    unfocus_set = set([label for label in labels.get_all_labels()])
+
+    for label in labels_range:
+        if '-' in label:
+            beg, end = label.split('-')
+            focus_region.extend(labels.get_region_by_range(beg, end))
+        else:
+            focus_region.append(labels.get_displaced_by_label[label])
+        unfocus_keys.discard(label)
+
+    for label in unfocus_set:
+        unfocus_region.append(labels.get_displaced_by_label[label])
+
+    if focus_list:
+        ''' draw the focus list '''
+        # view.show_at_center(focus_list[0])
+        view.add_regions(focus_key, focus_list, focus_scope)
+
+    if unfocus_list:
+        ''' draw the unfocus list '''
+        view.add_regions(unfocus_key, unfocus_list, unfocus_scope,
+                         flags=unfocus_flag)
+
+    return focus_list
+
+
+
+def draw_labels(view, keys, scopes, labels, unfocus_flag, partial_label=None):
+    '''
+    TODO: draw a list of partial_labels
+    '''
+    # multiple_focuses = True
+    focus_key, unfocus_key, viewing_key = keys
+    focus_scope, unfocus_scope = scopes
+
+    view.erase_regions(focus_key)
+    view.erase_regions(unfocus_key)
+
+    focus_list = []
+    unfocus_list = []
+    matched_region = None
 
     if not partial_label:
         ''' partial label is blank, draw all the labels'''
@@ -174,38 +235,26 @@ def draw_labels(view, keys, scopes, labels, unfocus_flag, partial_label=None):
         match all region starts with the partial lable
         '''
 
-        focus_list = []
-        unfocus_list = []
-        matched_region = labels.get_region_by_label(partial_label)
-        for label in labels.label_region:
-            region = labels.get_displaced_by_label(label)
-
-            if label.startswith(partial_label):
-                focus_list.append(region)
-            else:
-                unfocus_list.append(region)
+        focus_list, unfocus_list, matched_region = \
+                labels.split_partial_label(partial_label)
 
         if focus_list:
             ''' draw the focus list '''
             # view.show_at_center(focus_list[0])
             view.add_regions(focus_key, focus_list, focus_scope)
-            if len(focus_list) == 1:
-                multiple_focuses = False
 
         if unfocus_list:
             ''' draw the unfocus list '''
-            view.add_regions(unfocus_key,
-                             unfocus_list,
-                             unfocus_scope,
+            view.add_regions(unfocus_key, unfocus_list, unfocus_scope,
                              flags=unfocus_flag)
 
-    return (multiple_focuses, matched_region)
-
+    return (focus_list, matched_region)
 
 def label_generator_singledouble():
     # product =  (tup[0] + tup[1] for tup in permutations(digits+ascii_letters, 2))
     # return chain(ascii_letters,digits,product)
-    return chain(ascii_letters, digits[::-1], product(digits + ascii_letters, repeat=2))
+    return chain(ascii_letters, digits[::-1],\
+             product(digits + ascii_letters, repeat=2))
 
 
 def label_generator_double():
