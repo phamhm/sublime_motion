@@ -42,7 +42,8 @@ class LabelObject:
 
         region_list = []
         for label in self.label_region:
-            if (end_label and label >= beg_label and label <= end_label) or (not end_label and label >= beg_label:
+            if (end_label and label >= beg_label and label <= end_label) or \
+                (not end_label and label >= beg_label):
                 region_list.append(self.get_displaced_by_label(label))
 
         return region_list
@@ -170,6 +171,13 @@ def JumpToLabelCommand(view, edit, keys, target_point, multiple_selection=False,
 
 def draw_labels_in_range(view, keys, scopes, labels,
                          unfocus_flag, labels_range):
+    '''
+    Take a list of individual labels or a range of labes.
+
+    The labels in this list will be focused.
+
+    Other labels go into the unfocused list.
+    '''
     focus_key, unfocus_key, viewing_key = keys
     focus_scope, unfocus_scope = scopes
 
@@ -178,30 +186,34 @@ def draw_labels_in_range(view, keys, scopes, labels,
 
     focus_region = []
     unfocus_region = []
+    #Consider all labels to be unfocused here.
     unfocus_set = set([label for label in labels.get_all_labels()])
 
+    # Adding the labels into the focused list
     for label in labels_range:
         if '-' in label:
             beg, end = label.split('-')
             focus_region.extend(labels.get_region_by_range(beg, end))
         else:
-            focus_region.append(labels.get_displaced_by_label[label])
-        unfocus_keys.discard(label)
+            focus_region.append(labels.get_displaced_by_label(label))
+
+        # Remove the focused labels from the unfocus list
+        unfocus_set.discard(label)
 
     for label in unfocus_set:
-        unfocus_region.append(labels.get_displaced_by_label[label])
+        unfocus_region.append(labels.get_displaced_by_label(label))
 
-    if focus_list:
+    if focus_region:
         ''' draw the focus list '''
         # view.show_at_center(focus_list[0])
-        view.add_regions(focus_key, focus_list, focus_scope)
+        view.add_regions(focus_key, focus_region, focus_scope)
 
-    if unfocus_list:
+    if unfocus_region:
         ''' draw the unfocus list '''
-        view.add_regions(unfocus_key, unfocus_list, unfocus_scope,
+        view.add_regions(unfocus_key, unfocus_region, unfocus_scope,
                          flags=unfocus_flag)
 
-    return focus_list
+    return focus_region
 
 
 

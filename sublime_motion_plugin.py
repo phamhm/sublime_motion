@@ -36,6 +36,7 @@ from .motion import AddLabelsCommand
 from .motion import JumpToLabelCommand
 from .motion import draw_labels
 from .motion import label_generator_singledouble
+from .motion import draw_labels_in_range
 
 
 class SublimeMotionWindowHackCommand(sublime_plugin.WindowCommand):
@@ -109,7 +110,7 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
         self.multiple_selection = False
         self.select_till = False
         self.matched_region = None
-        self.range_select_mode = False
+        self.range_select_mode = True
         self.range_select_list = []
 
         self.select_word = True
@@ -137,7 +138,8 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
         self.undobuffer_and_jump()
 
     def on_panel_change(self, input):
-        if self.max_panel_len and len(input) > self.max_panel_len:
+        if not self.range_select_mode and self.max_panel_len and \
+           len(input) > self.max_panel_len:
             self.terminate_panel()
 
         if not input:
@@ -151,11 +153,11 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
             use rpartition, while comma is not entered yet, it's the field we're drawing/parsing
             '''
 
-            label_range = input.rpartition(',')[0]
+            labels_range = input.rpartition(',')[0]
 
             focus_list = draw_labels_in_range(self.view, self.keys,
-                        self.scopes, self.labels,
-                        self.unfocus_flag, labels_range)
+                                              self.scopes, self.labels,
+                                              self.unfocus_flag, labels_range)
 
             self.range_select_list.extend(focus_list)
         else:
@@ -164,7 +166,7 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
                             self.labels, self.unfocus_flag, input)
 
             if self.matched_region and len(multiple_focuses) == 1:
-                print('should terminate',len(multiple_focuses))
+                print('should terminate', len(multiple_focuses))
                 self.terminate_panel()
                 self.undobuffer_and_jump()
 
