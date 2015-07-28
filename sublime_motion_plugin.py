@@ -134,8 +134,21 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
             self.on_panel_cancel)
 
     def on_panel_done(self, input):
-        self.matched_region = self.labels.get_region_by_label(input)
-        self.undobuffer_and_jump()
+        if self.range_select_mode:
+            self.undo_buffer()
+            focus_region = []
+            for label in self.range_select_list:
+                region =  self.labels.get_region_by_label(label)
+                if region:
+                    if self.select_word:
+                        region = self.view.word(region)
+                    focus_region.append(region)
+            if focus_region:
+                JumpToLabelCommand(self.view,self.edit,self.keys,
+                                   focus_region,True)
+        else:
+            self.matched_region = self.labels.get_region_by_label(input)
+            self.undobuffer_and_jump()
 
     def on_panel_change(self, input):
         if not self.range_select_mode and self.max_panel_len and \
@@ -153,13 +166,13 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
             use rpartition, while comma is not entered yet, it's the field we're drawing/parsing
             '''
 
-            labels_range = input.rpartition(',')[0]
+            self.range_select_list = input.rpartition(',')[0].split(',')
 
             focus_list = draw_labels_in_range(self.view, self.keys,
                                               self.scopes, self.labels,
-                                              self.unfocus_flag, labels_range)
+                                              self.unfocus_flag,
+                                              self.range_select_list)
 
-            self.range_select_list.extend(focus_list)
         else:
             multiple_focuses, self.matched_region = \
                 draw_labels(self.view, self.keys, self.scopes,
@@ -178,12 +191,19 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
             self.undo = BufferUndoCommand(self.view, self.edit, self.keys)
 
     def undobuffer_and_jump(self):
+        self.undo_buffer()
+        self.jump()
+
+    def undo_buffer(self):
         if not self.undo:
             self.undo = BufferUndoCommand(self.view, self.edit, self.keys)
 
+    def jump(self):
         if self.matched_region:
+            if self.select_word:
+                self.matched_region=self.view.word(self.matched_region)
             JumpToLabelCommand(self.view, self.edit, self.keys,
-                               self.matched_region.begin(),
+                               [self.matched_region.begin()],
                                self.multiple_selection, self.select_till)
             self.view.set_syntax_file(self.current_syntax)
 

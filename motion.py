@@ -145,8 +145,9 @@ def AddLabelsCommand(view, edit, regex, labels, label_gen, beg=None,
             return
 
 
-def JumpToLabelCommand(view, edit, keys, target_point, multiple_selection=False,
-                       select_till=False, select_word=True):
+def JumpToLabelCommand(view, edit, keys, target_point,
+                       multiple_selection=False,
+                       select_till=False):
 
     region = sublime.Region(target_point)
 
@@ -159,15 +160,15 @@ def JumpToLabelCommand(view, edit, keys, target_point, multiple_selection=False,
         end = max(region_list)
         view.sel().add(sublime.Region(beg, end))
     else:
+        cursor = view.sel()[0]
         if not multiple_selection:
             view.sel().clear()
-        if select_word:
-            view.sel().add(view.word(target_point))
         else:
-            view.sel().add(region)
+            view.sel().subtract(cursor)
 
-    view.show(target_point)
+        view.sel().add_all(target_point)
 
+    # view.show(target_point)
 
 def draw_labels_in_range(view, keys, scopes, labels,
                          unfocus_flag, labels_range):
@@ -181,21 +182,21 @@ def draw_labels_in_range(view, keys, scopes, labels,
     focus_key, unfocus_key, viewing_key = keys
     focus_scope, unfocus_scope = scopes
 
-    view.erase_regions(focus_key)
-    view.erase_regions(unfocus_key)
+    unfocus_region = view.get_regions(focus_key)
+    if unfocus_region:
+        view.erase_regions(focus_key)
+        view.add_regions(unfocus_key, unfocus_region,
+                        unfocus_scope, flags=unfocus_flag)
 
-    focus_region = []
-    unfocus_region = []
     #Consider all labels to be unfocused here.
     unfocus_set = set([label for label in labels.get_all_labels()])
+    focus_region = []
+    unfocus_region=[]
 
     # Adding the labels into the focused list
     for label in labels_range:
-        if '-' in label:
-            beg, end = label.split('-')
-            focus_region.extend(labels.get_region_by_range(beg, end))
-        else:
-            focus_region.append(labels.get_displaced_by_label(label))
+        print('debug label',label)
+        focus_region.append(labels.get_displaced_by_label(label))
 
         # Remove the focused labels from the unfocus list
         unfocus_set.discard(label)
@@ -206,12 +207,13 @@ def draw_labels_in_range(view, keys, scopes, labels,
     if focus_region:
         ''' draw the focus list '''
         # view.show_at_center(focus_list[0])
+        print('regions',focus_region)
         view.add_regions(focus_key, focus_region, focus_scope)
 
     if unfocus_region:
         ''' draw the unfocus list '''
-        view.add_regions(unfocus_key, unfocus_region, unfocus_scope,
-                         flags=unfocus_flag)
+        view.add_regions(unfocus_key, unfocus_region,
+                        unfocus_scope, flags=unfocus_flag)
 
     return focus_region
 
