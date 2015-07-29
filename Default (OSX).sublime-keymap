@@ -56,12 +56,12 @@
     },
     {
         "keys": ["command+shift+w"],
-        "command": "sublime_motion",
+        "command": "sublime_motion_window_hack",
         "args":{"mode":"word","regex":"","multiple_selection":false}
     },
     {
         "keys": ["command+shift+alt+w"],
-        "command": "sublime_motion",
+        "command": "sublime_motion_window_hack",
         "args":{"mode":"word","regex":"","multiple_selection":true}
     },
 ]

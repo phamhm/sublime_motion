@@ -46,7 +46,7 @@ class SublimeMotionWindowHackCommand(sublime_plugin.WindowCommand):
         self.panel_name = 'regex'
         self.max_input_panel = None
         self.view = self.window.active_view()
-        self.literal = True
+        self.literal = False
         self.multiple_selection = False
 
         for setting in kwargs:
@@ -73,6 +73,7 @@ class SublimeMotionWindowHackCommand(sublime_plugin.WindowCommand):
                                      self.on_panel_change)
 
     def on_panel_done(self, input):
+        print('debug input mode.',input)
         self.view.run_command('sublime_motion',
                               {'mode': self.mode,
                                'regex': input,
@@ -110,7 +111,7 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
         self.multiple_selection = False
         self.select_till = False
         self.matched_region = None
-        self.range_select_mode = True
+        self.range_select_mode = False
         self.range_select_list = []
 
         self.select_word = True
@@ -120,6 +121,9 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
         for setting in kwargs:
             if hasattr(self, setting):
                 setattr(self, setting, kwargs[setting])
+
+        if self.mode == 'word':
+            self.max_panel_len = 0
 
     def run(self, edit, *kargs, **kwargs):
 
@@ -179,7 +183,6 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
                             self.labels, self.unfocus_flag, input)
 
             if self.matched_region and len(multiple_focuses) == 1:
-                print('should terminate', len(multiple_focuses))
                 self.terminate_panel()
                 self.undobuffer_and_jump()
 
@@ -187,7 +190,10 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
         self.labels.clear()
         # stopping undo by mode is very hackish, only leave it here for
         # debugging
-        if not self.undo and self.mode not in ['char', 'word']:
+
+        # need to check for either matched region or muliple focuses:
+        # need a flag, if drawn, undo it.
+        if not self.undo and self.matched_region:
             self.undo = BufferUndoCommand(self.view, self.edit, self.keys)
 
     def undobuffer_and_jump(self):

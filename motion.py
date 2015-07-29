@@ -116,6 +116,7 @@ def AddLabelsCommand(view, edit, regex, labels, label_gen, beg=None,
     work_region = sublime.Region(beg, end)
 
     displacement = 0
+    print('label literal mode',literal)
     while(beg is not None and beg < end):
         if literal is True:
             region = view.find(regex, beg, sublime.LITERAL)
