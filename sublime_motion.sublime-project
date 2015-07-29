@@ -6,7 +6,7 @@
 	    {
 	        "pep8":
 	        {
-	            "@disable": false,
+	            "@disable": true,
 	            "ignore": "E127,E128",
 	            "max-line-length": 512
 	        }
