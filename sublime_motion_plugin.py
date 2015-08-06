@@ -75,7 +75,6 @@ class SublimeMotionWindowHackCommand(sublime_plugin.WindowCommand):
                                      self.on_panel_change)
 
     def on_panel_done(self, input):
-        print('debug input mode.',input)
         self.view.run_command('sublime_motion',
                               {'mode': self.mode,
                                'regex': input,

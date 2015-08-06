@@ -116,7 +116,6 @@ def AddLabelsCommand(view, edit, regex, labels, label_gen, beg=None,
     work_region = sublime.Region(beg, end)
 
     displacement = 0
-    print('label literal mode',literal)
     while(beg is not None and beg < end):
         if literal is True:
             region = view.find(regex, beg, sublime.LITERAL)
@@ -196,7 +195,6 @@ def draw_labels_in_range(view, keys, scopes, labels,
 
     # Adding the labels into the focused list
     for label in labels_range:
-        print('debug label',label)
         focus_region.append(labels.get_displaced_by_label(label))
 
         # Remove the focused labels from the unfocus list
@@ -208,7 +206,6 @@ def draw_labels_in_range(view, keys, scopes, labels,
     if focus_region:
         ''' draw the focus list '''
         # view.show_at_center(focus_list[0])
-        print('regions',focus_region)
         view.add_regions(focus_key, focus_region, focus_scope)
 
     if unfocus_region:
