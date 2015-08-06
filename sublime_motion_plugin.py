@@ -24,6 +24,8 @@ current scope
 
 9. how can I implement a range selection?
  select all labels in range:a-10, or aa through, 10
+
+10. when enter an label out of range, the undo stop working. need to move undo away from the panel and put it back into run
 '''
 
 import sublime
@@ -130,28 +132,34 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
         self.init_settings(edit, *kargs, **kwargs)
 
         self.labels_adder()
+
+        draw_labels(self.view, self.keys,
+                    self.scopes, self.labels,
+                    self.unfocus_flag)
+
         self.view.window().show_input_panel(
-            self.panel_name + ' ' + self.mode.capitalize(),
-            self.panel_init_text,
-            self.on_panel_done,
-            self.on_panel_change,
-            self.on_panel_cancel)
+                self.panel_name + ' ' + self.mode.capitalize(),
+                self.panel_init_text,
+                self.on_panel_done,
+                self.on_panel_change,
+                self.on_panel_cancel)
 
     def on_panel_done(self, input):
-        if self.range_select_mode:
-            self.undo_buffer()
-            focus_region = []
-            for label in self.range_select_list:
-                region =  self.labels.get_region_by_label(label)
-                if region:
-                    if self.select_word:
-                        region = self.view.word(region)
-                    focus_region.append(region)
-            if focus_region:
-                JumpToLabelCommand(self.view,self.edit,self.keys,
-                                   focus_region,True)
-        else:
-            self.matched_region = self.labels.get_region_by_label(input)
+        # if self.range_select_mode:
+        #     self.undo_buffer()
+        #     focus_region = []
+        #     for label in self.range_select_list:
+        #         region =  self.labels.get_region_by_label(label)
+        #         if region:
+        #             if self.select_word:
+        #                 region = self.view.word(region)
+        #             focus_region.append(region)
+        #     if focus_region:
+        #         JumpToLabelCommand(self.view,self.edit,self.keys,
+        #                            focus_region,True)
+        # else:
+        self.matched_region = self.labels.get_region_by_label(input)
+        if self.matched_region:
             self.undobuffer_and_jump()
 
     def on_panel_change(self, input):
@@ -159,12 +167,7 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
            len(input) > self.max_panel_len:
             self.terminate_panel()
 
-        if not input:
-            ''' for blank input, draw all labels '''
-            draw_labels(self.view, self.keys,
-                        self.scopes, self.labels,
-                        self.unfocus_flag)
-        elif self.range_select_mode:
+        if self.range_select_mode:
             '''
             a,b,c,d0-d9,da-dz
             use rpartition, while comma is not entered yet, it's the field we're drawing/parsing
@@ -187,14 +190,7 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
                 self.undobuffer_and_jump()
 
     def on_panel_cancel(self):
-        self.labels.clear()
-        # stopping undo by mode is very hackish, only leave it here for
-        # debugging
-
-        # need to check for either matched region or muliple focuses:
-        # need a flag, if drawn, undo it.
-        if not self.undo and self.matched_region:
-            self.undo = BufferUndoCommand(self.view, self.edit, self.keys)
+        self.undo_buffer()
 
     def undobuffer_and_jump(self):
         self.undo_buffer()
@@ -206,12 +202,14 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
 
     def jump(self):
         if self.matched_region:
+            print(self.matched_region)
             if self.select_word:
                 self.matched_region=self.view.word(self.matched_region)
             JumpToLabelCommand(self.view, self.edit, self.keys,
-                               [self.matched_region.begin()],
+                               # [self.matched_region.begin()],
+                               [self.matched_region],
                                self.multiple_selection, self.select_till)
-            self.view.set_syntax_file(self.current_syntax)
+            # self.view.set_syntax_file(self.current_syntax)
 
     def terminate_panel(self):
         self.view.window().run_command("hide_panel", {"cancel": True})
