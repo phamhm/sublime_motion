@@ -101,7 +101,7 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
         self.range_select_mode = False
         self.range_select_list = []
 
-        self.select_word = True
+        self.select_word = False
         self.current_syntax = self.view.settings().get('syntax')
 
         # setting the variables from the key-map
@@ -187,14 +187,12 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
 
     def jump(self):
         if self.matched_region:
-            print(self.matched_region)
             if self.select_word:
                 self.matched_region=self.view.word(self.matched_region)
             JumpToLabelCommand(self.view, self.edit, self.keys,
                                # [self.matched_region.begin()],
-                               [self.matched_region],
+                               [self.matched_region.begin()],
                                self.multiple_selection, self.select_till)
-            # self.view.set_syntax_file(self.current_syntax)
 
     def terminate_panel(self):
         self.view.window().run_command("hide_panel", {"cancel": True})
