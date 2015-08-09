@@ -10,8 +10,6 @@ TODO:
 9. how can I implement a range selection?
  select all labels in range:a-10, or aa through, 10
 
-10. Select-till is broken.
-
 '''
 
 import sublime
