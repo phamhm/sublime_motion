@@ -1,31 +1,17 @@
 '''
 TODO:
 1. visual mode selection from current pointer to mark. DONE
-2. redraw in case multiple LABELS start with the same letter. DONE
 3. Currently, in multiple cursor mode, we can only choose one mark at a time.
     I'd like to refresh the panel to select multiple marks. Like choose a range
     of marks like [1-3] or provide a list of marks to select. May have issue
     with single and double char marks.
 4. change tuple to namedtuple
-a. two char label will overwrite the CRLF if the word at label is shorter than
-the label
-
-6. there is only one view, not multiple view. all the view need to be self.view
-    class LabelObject has view and get all views. all that needs to go away.
-    there may be a function later to deal with views in different panel
-    Like drawing stuff in different views
-
-7. Redraw doesn't have to undo then replace again with a small subset. redraw
-can be about changing the scope of everything else and leave the subset at the
-current scope
-
-8. Can't generate two input_panel. how to overcome this issue? another class,
-    oh well.
 
 9. how can I implement a range selection?
  select all labels in range:a-10, or aa through, 10
 
-10. when enter an label out of range, the undo stop working. need to move undo away from the panel and put it back into run
+10. Select-till is broken.
+
 '''
 
 import sublime
