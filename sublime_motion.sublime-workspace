@@ -52,18 +52,10 @@
 	"buffers":
 	[
 		{
-			"file": "__init__.py",
+			"file": "/home/hp/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
 			"settings":
 			{
-				"buffer_size": 299,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-			"settings":
-			{
-				"buffer_size": 987,
+				"buffer_size": 2312,
 				"line_ending": "Unix"
 			}
 		}
@@ -99,10 +91,26 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 152.0,
-		"last_filter": "install",
+		"height": 116.0,
+		"last_filter": "keyuse",
 		"selected_items":
 		[
+			[
+				"keyuse",
+				"Preferences: Key Bindings - User"
+			],
+			[
+				"keyuser",
+				"Preferences: Key Bindings - User"
+			],
+			[
+				"togme",
+				"View: Toggle Menu"
+			],
+			[
+				"wind",
+				"Origami: New Window from Saved Layout"
+			],
 			[
 				"install",
 				"Package Control: Install Package"
@@ -412,7 +420,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 464.0
+		"width": 424.0
 	},
 	"console":
 	{
@@ -441,10 +449,15 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/sublime_motion"
+		"/home/hp/.config/sublime-text-3/Packages/sublime_motion"
 	],
 	"file_history":
 	[
+		"/home/hp/.config/sublime-text-3/Packages/sublime_motion/sublime_motion_plugin.py",
+		"/home/hp/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
+		"/home/hp/.config/sublime-text-3/Packages/sublime_motion/__init__.py",
+		"/home/hp/.config/sublime-text-3/Packages/sublime_motion/Default (Windows).sublime-keymap",
+		"/home/hp/.config/sublime-text-3/Packages/sublime_motion/Default (Linux).sublime-keymap",
 		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/sublime_motion/LICENSE",
 		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/sublime_motion/sublime_motion_plugin.py",
@@ -536,7 +549,7 @@
 	],
 	"find":
 	{
-		"height": 36.0
+		"height": 40.0
 	},
 	"find_in_files":
 	{
@@ -551,6 +564,11 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"b",
+			"by",
+			"move",
+			"ctrl",
+			"args",
 			"theme",
 			"vintage",
 			"print",
@@ -680,176 +698,31 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "__init__.py",
+					"file": "/home/hp/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 299,
+						"buffer_size": 2312,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								227,
-								227
+								2147,
+								2147
 							]
 						],
 						"settings":
 						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content"
-							],
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 987,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content"
-							],
 							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -904,7 +777,7 @@
 	"project": "sublime_motion.sublime-project",
 	"replace":
 	{
-		"height": 64.0
+		"height": 76.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -914,16 +787,24 @@
 		"selected_items":
 		[
 			[
+				"subpy",
+				"sublime_motion_plugin.py"
+			],
+			[
+				"sub.py",
+				"sublime_motion_plugin.py"
+			],
+			[
+				"window",
+				"Default (Windows).sublime-keymap"
+			],
+			[
 				"lic",
 				"LICENSE"
 			],
 			[
 				"sublimepy",
 				"sublime_motion_plugin.py"
-			],
-			[
-				"window",
-				"Default (Windows).sublime-keymap"
 			],
 			[
 				"init",
@@ -936,10 +817,6 @@
 			[
 				"windo",
 				"Default (Windows).sublime-keymap"
-			],
-			[
-				"subpy",
-				"sublime_motion_plugin.py"
 			],
 			[
 				"sublimemopy",
@@ -1019,8 +896,8 @@
 	},
 	"select_symbol":
 	{
-		"height": 62.0,
-		"last_filter": "draw",
+		"height": 78.0,
+		"last_filter": "",
 		"selected_items":
 		[
 			[
@@ -1044,7 +921,7 @@
 				"## Customization"
 			]
 		],
-		"width": 378.0
+		"width": 400.0
 	},
 	"selected_group": 0,
 	"settings":
