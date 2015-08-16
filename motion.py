@@ -95,12 +95,17 @@ class LabelObject:
         self.empty = True
 
 
-def BufferUndoCommand(view, edit, keys):
-    """Command for removing LABELS from views"""
+def BufferUndoCommand(view, edit, keys, is_empty):
+    """
+    Command for removing LABELS from views
+    only calling run_command('undo') iff:
+            Labels is not empty
+    """
     for key in keys:
         view.erase_regions(key)
     view.end_edit(edit)
-    view.run_command("undo")
+    if not is_empty:
+        view.run_command("undo")
 
     return True
 
@@ -195,14 +200,19 @@ def draw_labels_in_range(view, keys, scopes, labels,
 
     # Adding the labels into the focused list
     for label in labels_range:
-        focus_region.append(labels.get_displaced_by_label(label))
+        tmp = labels.get_displaced_by_label(label)
+        if tmp:
+            focus_region.append(tmp)
 
         # Remove the focused labels from the unfocus list
         unfocus_set.discard(label)
 
     for label in unfocus_set:
-        unfocus_region.append(labels.get_displaced_by_label(label))
+        tmp = labels.get_displaced_by_label(label)
+        if tmp:
+            unfocus_region.append(tmp)
 
+    print('focus region',focus_region)
     if focus_region:
         ''' draw the focus list '''
         # view.show_at_center(focus_list[0])

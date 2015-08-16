@@ -4,20 +4,8 @@
 		"selected_items":
 		[
 			[
-				"draw_labels",
-				"draw_labels_in_range	function"
-			],
-			[
-				"add",
-				"add_regions"
-			],
-			[
-				"get",
-				"get_displaced_by_label"
-			],
-			[
-				"partial",
-				"partial_label"
+				"undobuffer",
+				"undo_buffer"
 			],
 			[
 				"syn",
@@ -51,14 +39,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "/home/hp/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
-			"settings":
-			{
-				"buffer_size": 2312,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "Anaconda Python Builder",
 	"build_system_choices":
@@ -91,77 +71,29 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 116.0,
-		"last_filter": "keyuse",
+		"height": 99.0,
+		"last_filter": "keyuser",
 		"selected_items":
 		[
-			[
-				"keyuse",
-				"Preferences: Key Bindings - User"
-			],
 			[
 				"keyuser",
 				"Preferences: Key Bindings - User"
 			],
 			[
-				"togme",
-				"View: Toggle Menu"
+				"keyus",
+				"Preferences: Key Bindings - User"
 			],
 			[
-				"wind",
-				"Origami: New Window from Saved Layout"
+				"k",
+				"Preferences: Key Bindings - User"
 			],
 			[
-				"install",
-				"Package Control: Install Package"
-			],
-			[
-				":w",
-				":w - Save"
-			],
-			[
-				"prefuse",
-				"Preferences: Settings - User"
-			],
-			[
-				"prefus",
-				"Preferences: Settings - User"
+				"togmini",
+				"View: Toggle Minimap"
 			],
 			[
 				"remove",
 				"Package Control: Remove Package"
-			],
-			[
-				"prefuser",
-				"Preferences: Settings - User"
-			],
-			[
-				"user",
-				"Preferences: Key Bindings - User"
-			],
-			[
-				":q",
-				"Git: Quick Commit"
-			],
-			[
-				":",
-				":w - Save"
-			],
-			[
-				"toglmin",
-				"View: Toggle Minimap"
-			],
-			[
-				"pep8",
-				"Anaconda: Autoformat PEP8 Errors"
-			],
-			[
-				"instal",
-				"Package Control: Install Package"
-			],
-			[
-				"pepe8",
-				"Anaconda: Autoformat PEP8 Errors"
 			],
 			[
 				"python",
@@ -170,6 +102,74 @@
 			[
 				"pyt",
 				"Set Syntax: Python"
+			],
+			[
+				"pytn",
+				"SublimeREPL: Python"
+			],
+			[
+				":w",
+				":w - Save"
+			],
+			[
+				"syn",
+				"Set Syntax: Python"
+			],
+			[
+				"syntaxpy",
+				"Set Syntax: Python"
+			],
+			[
+				"syntaxpython",
+				"Set Syntax: Python"
+			],
+			[
+				"user",
+				"Preferences: Settings - User"
+			],
+			[
+				"key",
+				"Preferences: Key Bindings - User"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"prefus",
+				"Preferences: Settings - User"
+			],
+			[
+				"wrap",
+				"Word Wrap: Toggle"
+			],
+			[
+				"mini",
+				"View: Toggle Minimap"
+			],
+			[
+				"tab",
+				"View: Toggle Tabs"
+			],
+			[
+				"defaul",
+				"Preferences: Settings - Default"
+			],
+			[
+				"color",
+				"ColorSchemeSelector: Select Color Scheme"
+			],
+			[
+				"theme",
+				"SublimeLinter: Choose Gutter Theme"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"pep8",
+				"Anaconda: Autoformat PEP8 Errors"
 			],
 			[
 				"text",
@@ -182,6 +182,10 @@
 			[
 				"ins",
 				"Package Control: Install Package"
+			],
+			[
+				"pepe8",
+				"Anaconda: Autoformat PEP8 Errors"
 			],
 			[
 				"",
@@ -234,10 +238,6 @@
 			[
 				"vinctrl",
 				"Vintageous: Toggle Vim Ctrl Keys"
-			],
-			[
-				"key",
-				"Preferences: Key Bindings - User"
 			],
 			[
 				"vintage",
@@ -308,10 +308,6 @@
 				"Terminality: Browse Commands..."
 			],
 			[
-				"insta",
-				"Package Control: Install Package"
-			],
-			[
 				"build",
 				"Build With: Python"
 			],
@@ -322,10 +318,6 @@
 			[
 				"new",
 				"ANF: New File"
-			],
-			[
-				"mini",
-				"View: Toggle Minimap"
 			],
 			[
 				"to",
@@ -420,15 +412,14 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 424.0
+		"width": 475.0
 	},
 	"console":
 	{
 		"height": 301.0,
 		"history":
 		[
-			"view.run_command('browse_dir')",
-			"len(None)",
+			"view.run_command('sublime_motion_window_hack')",
 			"window.run_command('my_test')",
 			"window.run_command('my_text')",
 			"view.run_command('my_test')",
@@ -449,29 +440,27 @@
 	},
 	"expanded_folders":
 	[
-		"/home/hp/.config/sublime-text-3/Packages/sublime_motion"
+		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/sublime_motion"
 	],
 	"file_history":
 	[
-		"/home/hp/.config/sublime-text-3/Packages/sublime_motion/sublime_motion_plugin.py",
-		"/home/hp/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
-		"/home/hp/.config/sublime-text-3/Packages/sublime_motion/__init__.py",
-		"/home/hp/.config/sublime-text-3/Packages/sublime_motion/Default (Windows).sublime-keymap",
-		"/home/hp/.config/sublime-text-3/Packages/sublime_motion/Default (Linux).sublime-keymap",
-		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/sublime_motion/LICENSE",
-		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/sublime_motion/sublime_motion_plugin.py",
-		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
-		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/sublime_motion/Default (Windows).sublime-keymap",
+		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/sublime_motion/sublime_motion_plugin.py",
+		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/sublime_motion/motion.py",
+		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/sublime_motion/Default (OSX).sublime-keymap",
+		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/sublime_motion/Default (Windows).sublime-keymap",
+		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
 		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/sublime_motion/motion.py",
-		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/sublime_motion/sublime_motion.sublime-project",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/sublime_motion/Default (Windows).sublime-keymap",
 		"/C/Program Files/Sublime Text 3/Packages/C#.sublime-package",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/sublime_motion/sublime_motion_plugin.py",
 		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/sublime_motion/Default (OSX).sublime-keymap",
 		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/test_plugins/test_plugins.py",
 		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/test_plugins/Default (OSX).sublime-keymap",
 		"/Users/hp/Project/ace-jump-sublime/ace_jump.py",
 		"/Users/hp/Project/ace-jump-sublime/Default (OSX).sublime-keymap",
-		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/DeleteWord/delete_word.py",
 		"/Users/hp/Project/ace-jump-sublime/AceJump.sublime-settings",
 		"/Users/hp/Project/ace-jump-sublime/README.md",
@@ -482,7 +471,6 @@
 		"/Users/hp/Project/Vintageous/xactions.py",
 		"/Users/hp/Project/Vintageous/tests/commands/test_vi_big_p.py",
 		"/Users/hp/Project/Vintageous/README.md",
-		"/Users/hp/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
 		"/Users/hp/Project/Vintageous/tests/vi/test_big_word_reverse.py",
 		"/Users/hp/Project/Vintageous/vi/__init__.py",
 		"/Users/hp/Project/Vintageous/vi/abbrev.py",
@@ -525,6 +513,7 @@
 		"/C/Users/hp/Python_Projects/recursive/trampline.py",
 		"/C/Users/hp/Python_Projects/recursive/trampoline.md",
 		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
 		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/Origami/Default (Windows).sublime-keymap",
 		"/C/Users/hp/AppData/Roaming/Sublime Text 3/Packages/Origami/Origami.sublime-settings",
 		"/C/Users/hp/Python_Projects/recursive/time_traveling.md",
@@ -549,7 +538,7 @@
 	],
 	"find":
 	{
-		"height": 40.0
+		"height": 38.0
 	},
 	"find_in_files":
 	{
@@ -564,122 +553,134 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"b",
-			"by",
-			"move",
-			"ctrl",
-			"args",
-			"theme",
-			"vintage",
-			"print",
-			"  ",
-			"  \n",
-			"labels.*range",
-			"draw_labels_in_range",
-			"draw.labels.in.range",
-			"unfocus_set",
-			"range",
-			"range.sele.*mode",
-			"range_select_list",
-			"range_select_mode",
-			"draw_labels",
-			"unfocus_list",
-			"partial.label",
-			"labels",
-			"print",
-			"focus_list",
-			"draw_labels",
-			"range_select_mode",
-			"range.select.*mode",
-			"draw.labels",
-			"multiple.focuses",
+			"select.word",
 			"multiple_focuses",
-			"range_select",
-			"show.at",
-			"syntax",
-			"set_syntax_file",
+			"print",
+			"select.till",
+			"range.select.mode",
+			"of",
+			"select.word",
+			"undobuffer.and.jump",
+			"self.jump",
+			"select_word",
+			"word",
+			"set.syntax",
+			"matched_region",
+			"on_panel_canel",
+			"draw.labels",
+			"matched.region",
+			"terminate.panel",
+			"self.matched.region",
+			"jumptolabelcommand",
+			"focus_region",
+			"self.matched.region",
+			"print",
+			"self.scopes",
+			"add.regions",
+			"BufferUndoCommand",
+			"view.erase.regions",
+			"draw.labels",
+			"replace",
+			"viewing_key",
+			"draw.labels.",
+			"undo",
+			"terminate_panel",
+			"hide.panel",
+			"self",
+			"onchange",
+			"ca",
+			"matched_region",
+			"focus.key",
+			"undo_buffer",
+			"terminate.panel",
+			"cancel",
+			"terminate_panel",
+			"()",
+			"undo_buffer",
+			"self.keys",
+			"jfksdljf",
+			"terminate_panel",
+			"undo_buffer",
 			"syntax",
 			"JumpToLabelCommand",
+			"select.till",
+			"region",
+			"select.word",
+			"select_word",
+			"select.till",
+			"JumpToLabelCommand",
+			"view.word",
+			"select_word",
+			"JumpToLabelCommand",
+			"multiple_selection",
+			"select.word",
+			"jump",
+			"range.select.mode",
+			"range",
+			"range_select_mode",
+			"range.select.list",
+			"run",
+			"multiple.selection",
+			"JumpToLabelCommand",
+			"target_point",
 			"jumptolabelcommand",
-			"draw.labels",
-			"syntax",
-			"keys",
-			"scope",
-			"comment",
-			"matched.region",
-			"panel.name",
-			"jump to",
-			"get_user_regex",
+			"target_point",
+			"select_word",
 			"print",
-			"debug",
-			"self.literal",
-			"addlabelscommand",
-			"find",
+			"undo",
+			"displaced_regions",
+			"focus_list",
+			"focus.list",
+			"focus_list",
+			"self.focus.list",
+			"bufferundocommand",
+			"self.matched.region",
+			"labels_drawn",
+			"matched",
+			"focus_list",
+			"labels.drawn",
+			"draw.labels",
+			"draw.labels.",
+			"self.undo",
+			"select.word",
+			"select.till",
+			"select",
+			"line",
+			"theme",
+			"small",
+			"white.space",
+			"draw_labels",
+			"undobuffer_and_jump",
+			"undobuffer.and.jump",
+			"self.undo",
+			"range_select_mode",
+			"on",
 			"literal",
-			"input_panel",
-			"self.mode",
-			"labels_adder",
-			"labels.adder",
-			"self.regex",
-			"labels_adder",
-			"get_user_regex",
-			"get.user.regex",
-			"labels_adder",
-			"get_user_regex",
-			"jump to",
-			"get_user_regex",
-			"label_add_special",
-			"panel.name",
-			"jump to",
-			"char",
-			"special",
-			"char",
-			"all.views",
-			"addlabels",
-			"add.label",
-			"regex",
-			"self.labels",
-			"jumplabel",
-			"label.gen",
-			"self",
-			"add.region",
-			"visible_region",
-			"visible",
-			"all.views",
-			"mylabels",
-			"add.*label",
-			"acejumpadd",
 			"find",
-			"self.window",
-			"get.active.views",
-			"vintagous",
-			"ignored.packages",
-			"sublime.*view",
-			"clamp",
-			"while",
-			"view.substr",
-			"sublime.view",
-			"gla",
-			"sublime.view",
-			"new_sels",
-			"clamp",
-			"hints",
-			"allcontent",
-			"big.v",
-			"font",
-			"vintagous",
-			"down",
-			"        \n",
-			"        ",
-			"            \n",
-			"        \n",
-			"                 \n",
-			"        ",
-			"        \n",
-			"    ",
-			"	\n",
-			"		\n",
-			"font"
+			"quick.panel.literal",
+			"range.select.mode",
+			"max.panel.len",
+			"word",
+			"on_panel_done",
+			"mode",
+			"jump",
+			"range.select.mode",
+			"max.panel.len",
+			"range.select.mode",
+			"range.mode",
+			"jumptolabelcommand",
+			"view.sel",
+			"cursor",
+			"unfocus",
+			"undobuffer.and.jump",
+			"range_select_list",
+			"self.multiple.selection",
+			"self.labels.*range",
+			"jumptolabelcommand",
+			"add.regions",
+			"range.select.mode",
+			"range.mode",
+			"range"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -698,39 +699,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "/home/hp/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2312,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2147,
-								2147
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -777,7 +747,7 @@
 	"project": "sublime_motion.sublime-project",
 	"replace":
 	{
-		"height": 76.0
+		"height": 54.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -787,36 +757,32 @@
 		"selected_items":
 		[
 			[
-				"subpy",
-				"sublime_motion_plugin.py"
+				"motion",
+				"motion.py"
 			],
 			[
-				"sub.py",
-				"sublime_motion_plugin.py"
-			],
-			[
-				"window",
+				"wind",
 				"Default (Windows).sublime-keymap"
 			],
 			[
-				"lic",
-				"LICENSE"
-			],
-			[
-				"sublimepy",
-				"sublime_motion_plugin.py"
-			],
-			[
-				"init",
-				"__init__.py"
+				"py",
+				"motion.py"
 			],
 			[
 				"sublime",
 				"sublime_motion_plugin.py"
 			],
 			[
-				"windo",
-				"Default (Windows).sublime-keymap"
+				"osx",
+				"Default (OSX).sublime-keymap"
+			],
+			[
+				"sublimpy",
+				"sublime_motion_plugin.py"
+			],
+			[
+				"subpy",
+				"sublime_motion_plugin.py"
 			],
 			[
 				"sublimemopy",
@@ -896,21 +862,17 @@
 	},
 	"select_symbol":
 	{
-		"height": 78.0,
+		"height": 167.0,
 		"last_filter": "",
 		"selected_items":
 		[
 			[
-				"draw",
-				"draw_labels"
-			],
-			[
-				"drw",
-				"draw_labels"
-			],
-			[
 				"jump",
 				"JumpToLabelCommand"
+			],
+			[
+				"draw",
+				"draw_labels"
 			],
 			[
 				"clear",
@@ -927,7 +889,7 @@
 	"settings":
 	{
 	},
-	"show_minimap": false,
+	"show_minimap": true,
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": false,
@@ -935,6 +897,6 @@
 	"status_bar_visible": true,
 	"template_settings":
 	{
-		"max_columns": 5
+		"max_columns": 2
 	}
 }

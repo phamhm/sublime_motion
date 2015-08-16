@@ -62,6 +62,6 @@
     {
         "keys": ["command+shift+alt+w"],
         "command": "sublime_motion_window_hack",
-        "args":{"mode":"word","regex":"","multiple_selection":true}
+        "args":{"mode":"word","regex":"","multiple_selection":true,"range_select_mode":true}
     },
 ]

@@ -34,8 +34,10 @@ class SublimeMotionWindowHackCommand(sublime_plugin.WindowCommand):
         self.view = self.window.active_view()
         self.literal = False
         self.multiple_selection = False
+        self.range_select_mode = False
 
         for setting in kwargs:
+            print('in hack',setting,kwargs[setting])
             if hasattr(self, setting):
                 setattr(self, setting, kwargs[setting])
 
@@ -54,20 +56,22 @@ class SublimeMotionWindowHackCommand(sublime_plugin.WindowCommand):
 
     def show_panel(self):
         self.window.show_input_panel('Enter regex', '',
-                                     self.on_panel_done,
-                                     self.on_panel_change,
-                                     self.on_panel_change)
+                                     self.on_done,
+                                     self.on_change,
+                                     self.on_change)
 
-    def on_panel_done(self, input):
+    def on_done(self, input):
         self.view.run_command('sublime_motion',
                               {'mode': self.mode,
                                'regex': input,
-                               'literal': self.literal})
+                               'literal': self.literal,
+                               'multiple_selection':self.multiple_selection,
+                               'range_select_mode':self.range_select_mode})
 
-    def on_panel_change(self, input):
+    def on_change(self, input):
         pass
 
-    def on_panel_cancel(self):
+    def on_cancel(self):
         pass
 
 
@@ -93,9 +97,9 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
         # available mode:[anything,above,below,right,left,char,word]
         self.mode = "anything"
         self.regex = r'\b[^\W]'
-        self.multiple_selection = False
         self.select_till = False
         self.matched_region = None
+        self.multiple_selection = False
         self.range_select_mode = False
         self.range_select_list = []
 
@@ -103,6 +107,7 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
         self.current_syntax = self.view.settings().get('syntax')
 
         # setting the variables from the key-map
+        print ('in sublime motion ',kwargs)
         for setting in kwargs:
             if hasattr(self, setting):
                 setattr(self, setting, kwargs[setting])
@@ -121,29 +126,31 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
                     self.unfocus_flag)
 
         self.view.window().show_input_panel(
-                self.panel_name + ' ' + self.mode.capitalize(),
-                self.panel_init_text,
-                self.on_panel_done,
-                self.on_panel_change,
-                self.on_panel_cancel)
+            self.panel_name + ' ' + self.mode.capitalize(),
+            self.panel_init_text,
+            self.on_panel_done,
+            self.on_panel_change,
+            self.on_panel_cancel)
 
     def on_panel_done(self, input):
-        # if self.range_select_mode:
-        #     self.undo_buffer()
-        #     focus_region = []
-        #     for label in self.range_select_list:
-        #         region =  self.labels.get_region_by_label(label)
-        #         if region:
-        #             if self.select_word:
-        #                 region = self.view.word(region)
-        #             focus_region.append(region)
-        #     if focus_region:
-        #         JumpToLabelCommand(self.view,self.edit,self.keys,
-        #                            focus_region,True)
-        # else:
-        self.matched_region = self.labels.get_region_by_label(input)
-        if self.matched_region:
-            self.undobuffer_and_jump()
+        if self.range_select_mode:
+            self.undo_buffer()
+            focus_region = []
+            for label in self.range_select_list:
+                region = self.labels.get_region_by_label(label)
+                if region:
+                    if self.select_word:
+                        region = self.view.word(region)
+                    focus_region.append(region)
+            if focus_region:
+                JumpToLabelCommand(self.view, self.edit, self.keys,
+                                   focus_region, True)
+        else:
+            self.matched_region = self.labels.get_region_by_label(input)
+            if self.matched_region:
+                self.undobuffer_and_jump()
+            else:
+                self.undo_buffer()
 
     def on_panel_change(self, input):
         if not self.range_select_mode and self.max_panel_len and \
@@ -173,6 +180,9 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
                 self.undobuffer_and_jump()
 
     def on_panel_cancel(self):
+        '''
+            Hit ESC to cancel the input panel
+        '''
         self.undo_buffer()
 
     def undobuffer_and_jump(self):
@@ -181,12 +191,13 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
 
     def undo_buffer(self):
         if not self.undo:
-            self.undo = BufferUndoCommand(self.view, self.edit, self.keys)
+            self.undo = BufferUndoCommand(self.view, self.edit,
+                                          self.keys, self.labels.is_empty())
 
     def jump(self):
         if self.matched_region:
             if self.select_word:
-                self.matched_region=self.view.word(self.matched_region)
+                self.matched_region = self.view.word(self.matched_region)
             JumpToLabelCommand(self.view, self.edit, self.keys,
                                # [self.matched_region.begin()],
                                [self.matched_region.begin()],
