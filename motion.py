@@ -212,7 +212,6 @@ def draw_labels_in_range(view, keys, scopes, labels,
         if tmp:
             unfocus_region.append(tmp)
 
-    print('focus region',focus_region)
     if focus_region:
         ''' draw the focus list '''
         # view.show_at_center(focus_list[0])

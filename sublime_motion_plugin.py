@@ -37,7 +37,6 @@ class SublimeMotionWindowHackCommand(sublime_plugin.WindowCommand):
         self.range_select_mode = False
 
         for setting in kwargs:
-            print('in hack',setting,kwargs[setting])
             if hasattr(self, setting):
                 setattr(self, setting, kwargs[setting])
 
@@ -107,7 +106,6 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
         self.current_syntax = self.view.settings().get('syntax')
 
         # setting the variables from the key-map
-        print ('in sublime motion ',kwargs)
         for setting in kwargs:
             if hasattr(self, setting):
                 setattr(self, setting, kwargs[setting])
