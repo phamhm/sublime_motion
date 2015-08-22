@@ -1,17 +1,9 @@
 '''
-TODO:
-1. visual mode selection from current pointer to mark. DONE
-3. Currently, in multiple cursor mode, we can only choose one mark at a time.
-    I'd like to refresh the panel to select multiple marks. Like choose a range
-    of marks like [1-3] or provide a list of marks to select. May have issue
-    with single and double char marks.
-4. change tuple to namedtuple
-
-9. how can I implement a range selection?
- select all labels in range:a-10, or aa through, 10
-
+ go to line mode where the labels are at the begining of line
+ and it's something like the relative number mode in vim
+ 1. Add relative line mode.
+ 2. draw labels at the begining of lines in reverse orders.
 '''
-
 import sublime
 import sublime_plugin
 
@@ -64,8 +56,8 @@ class SublimeMotionWindowHackCommand(sublime_plugin.WindowCommand):
                               {'mode': self.mode,
                                'regex': input,
                                'literal': self.literal,
-                               'multiple_selection':self.multiple_selection,
-                               'range_select_mode':self.range_select_mode})
+                               'multiple_selection': self.multiple_selection,
+                               'range_select_mode': self.range_select_mode})
 
     def on_change(self, input):
         pass
@@ -94,22 +86,39 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
         self.max_panel_len = 2
 
         # available mode:[anything,above,below,right,left,char,word]
+
+        # label every word in the view
         self.mode = "anything"
+
+        # setup regex to match all word
         self.regex = r'\b[^\W]'
+
+        # highlight everything from current position to label
         self.select_till = False
+
+        # the region that matche the input label
         self.matched_region = None
+
+        # enable selecting multiple labels
+        # each label is separated by a comma ','
         self.multiple_selection = False
         self.range_select_mode = False
         self.range_select_list = []
 
+        # If true highlight the enter word for editing
+        # if false, only move the cursor to the begining of that word
         self.select_word = False
+
+        # obtaining the current syntax of the view
+        # syntax highlighting will be disabled while in sublime motion
         self.current_syntax = self.view.settings().get('syntax')
 
-        # setting the variables from the key-map
+        # readding the setting file and reset the variables
         for setting in kwargs:
             if hasattr(self, setting):
                 setattr(self, setting, kwargs[setting])
 
+        # if we're in the 'word' mode, the panel lengh is not restricted.
         if self.mode == 'word':
             self.max_panel_len = 0
 
@@ -119,10 +128,12 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
 
         self.labels_adder()
 
+        # drawing labels before the selection panel is called
         draw_labels(self.view, self.keys,
                     self.scopes, self.labels,
                     self.unfocus_flag)
 
+        #calling panel for user input
         self.view.window().show_input_panel(
             self.panel_name + ' ' + self.mode.capitalize(),
             self.panel_init_text,
@@ -132,22 +143,30 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
 
     def on_panel_done(self, input):
         if self.range_select_mode:
-            self.undo_buffer()
-            focus_region = []
+            self.undo_buffer() # remove all the labels in the view
+
+            # find all matching regions
+            focus_regions = []
             for label in self.range_select_list:
                 region = self.labels.get_region_by_label(label)
                 if region:
                     if self.select_word:
                         region = self.view.word(region)
-                    focus_region.append(region)
-            if focus_region:
+                    focus_regions.append(region)
+
+            # from the list of matching regions, select all labels
+            if focus_regions:
                 JumpToLabelCommand(self.view, self.edit, self.keys,
-                                   focus_region, True)
+                                   focus_regions, True)
         else:
+            # only jump to one label
             self.matched_region = self.labels.get_region_by_label(input)
+
             if self.matched_region:
+                # if region is matched, remove the labels and jump to region
                 self.undobuffer_and_jump()
             else:
+                # if there is no matched, remove the labels
                 self.undo_buffer()
 
     def on_panel_change(self, input):
