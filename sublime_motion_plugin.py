@@ -93,9 +93,6 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
         # setup regex to match all word
         self.regex = r'\b[^\W]'
 
-        # highlight everything from current position to label
-        self.select_till = False
-
         # the region that matche the input label
         self.matched_region = None
 
@@ -108,6 +105,15 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
         # If true highlight the enter word for editing
         # if false, only move the cursor to the begining of that word
         self.select_word = False
+
+        # select the whole line
+        # if True, must set self.select_word to False
+        self.select_line = False
+
+        # highlight everything from current position to label
+        # can be use with select_line to highlight everything from cursor to
+        # label
+        self.select_till = False
 
         # obtaining the current syntax of the view
         # syntax highlighting will be disabled while in sublime motion
@@ -164,7 +170,7 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
 
             if self.matched_region:
                 # if region is matched, remove the labels and jump to region
-                self.undobuffer_and_jump()
+                self.undobuffer_and_jump([self.matched_region])
             else:
                 # if there is no matched, remove the labels
                 self.undo_buffer()
@@ -180,21 +186,22 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
             use rpartition, while comma is not entered yet, it's the field we're drawing/parsing
             '''
 
+            # parsing the comma separted list of input labels
             self.range_select_list = input.rpartition(',')[0].split(',')
 
+            # passing the range_select_list to focus on the input labelS
             focus_list = draw_labels_in_range(self.view, self.keys,
                                               self.scopes, self.labels,
                                               self.unfocus_flag,
                                               self.range_select_list)
 
         else:
-            multiple_focuses, self.matched_region = \
-                draw_labels(self.view, self.keys, self.scopes,
-                            self.labels, self.unfocus_flag, input)
+            focus_list = draw_labels(self.view, self.keys, self.scopes,
+                                    self.labels, self.unfocus_flag, input)
 
-            if self.matched_region and len(multiple_focuses) == 1:
+            if focus_list and len(focus_list) == 1:
                 self.terminate_panel()
-                self.undobuffer_and_jump()
+                self.undobuffer_and_jump(focus_list)
 
     def on_panel_cancel(self):
         '''
@@ -202,23 +209,28 @@ class SublimeMotionCommand(sublime_plugin.TextCommand):
         '''
         self.undo_buffer()
 
-    def undobuffer_and_jump(self):
+    def undobuffer_and_jump(self,focus_list = None):
         self.undo_buffer()
-        self.jump()
+        self.jump(focus_list)
 
     def undo_buffer(self):
         if not self.undo:
             self.undo = BufferUndoCommand(self.view, self.edit,
                                           self.keys, self.labels.is_empty())
 
-    def jump(self):
-        if self.matched_region:
+    def jump(self, focus_list = None):
+        if focus_list:
             if self.select_word:
-                self.matched_region = self.view.word(self.matched_region)
+                focus_list = [self.view.word(region) for region in focus_list]
+                # self.matched_region = self.view.word(self.matched_region)
+            else:
+                focus_list = [region.begin() for region in focus_list]
+
             JumpToLabelCommand(self.view, self.edit, self.keys,
                                # [self.matched_region.begin()],
-                               [self.matched_region.begin()],
-                               self.multiple_selection, self.select_till)
+                               focus_list,
+                               self.multiple_selection,
+                               self.select_till)
 
     def terminate_panel(self):
         self.view.window().run_command("hide_panel", {"cancel": True})
